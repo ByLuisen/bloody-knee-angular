@@ -1,0 +1,26 @@
+<h1 class="sm:text-center text-center">MIS VIDEOS FAVORITOS</h1>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 justify-center mx-20 md:mx-20 mt-5 mb-10">
+  <div *ngFor="let video of favoriteVideos"
+    class="card bg-white-100 rounded-lg shadow-md hover:transform hover:scale-105 transition duration-300">
+    <img class="w-full" [src]="'../../../assets/img/' + video.modality_id + '.webp'">
+    <div class="p-4">
+      <div class="premium-icon" *ngIf="video.exclusive">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #FFC300;"
+          class="star-icon">
+          <path
+            d="M21.947 9.179a1.001 1.001 0 0 0-.868-.676l-5.701-.453-2.467-5.461a.998.998 0 0 0-1.822-.001L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.213 4.107-1.49 6.452a1 1 0 0 0 1.53 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082c.297-.268.406-.686.278-1.065z">
+          </path>
+        </svg>
+      </div>
+      <h2 class="text-lg font-bold mb-2 flex">{{ video.title }}</h2>
+      <div class="flex justify-between">
+        <p class="text-sm mr-2"><b> Autor:</b> </p>
+        <p class="text-sm text-gray-500"> {{ video.coach }}</p>
+      </div>
+      <div class="flex justify-between">
+        <p class="text-sm mr-2"><b>Visualizaciones:</b></p>
+        <p class="text-sm text-gray-500">{{ video.visits }}</p>
+      </div>
+    </div>
+  </div>
+</div>

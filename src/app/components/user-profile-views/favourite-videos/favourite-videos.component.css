@@ -1,0 +1,103 @@
+.content_container {
+    /* overflow: auto; */
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    height: 100%;
+  }
+  
+  .background_profile {
+    width: 825px;
+    height: 120px;
+    border-radius: 105.14px;
+    margin-top: 35px;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(90deg, #ff0000 0%, #850000 22.31%);
+  }
+ 
+  
+  .content_profile_firstInfo {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 10px;
+    align-items: center;
+    /* justify-content: center; */
+  }
+  .profile-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+  }
+  .background_profile_img {
+    border-radius: 100px;
+    height: 100px;
+    width: auto;
+    float: left;
+  }
+  
+  .user_nickname {
+    font-weight: bold;
+    color: white;
+    font-size: 50px;
+    margin-left: 10px;
+  }
+  
+  .user_name {
+    color: rgba(255, 255, 255, 0.377);
+    font-size: 40px;
+    margin-left: 10px;
+    margin-top: 25px;
+  }
+  h1 {
+    font-size: 40px;
+    color: black;
+  }
+  
+  /* Editar la foto */
+  .editable {
+    cursor: pointer;
+  }
+  
+  .editable button {
+    display: none;
+  }
+  
+  .editable:hover button {
+    display: block;
+  }
+  
+  /* swipper liked videos */
+  .swiper-container {
+    height: 400px; /* Ajusta la altura según tus necesidades */
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin-left: 150px;
+    margin-right: 150px;
+    /* overflow: auto; */
+  }
+  
+  img {
+    display: block;
+    max-width: 100%;
+  }
+  
+  .swiper-wrapper {
+    padding-left: initial;
+    margin: 0;
+  }
+  
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    width: 500px;
+    height: 300px;
+    border-right: 1px solid black;
+    display: flex;
+    align-items: center;
+  }
+  
+  

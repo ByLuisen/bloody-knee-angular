@@ -1,0 +1,165 @@
+h1.bk_title {
+  font-size: 100px;
+  /* Tamaño más pequeño para pantallas pequeñas */
+}
+
+.gray-square {
+  width: 550px;
+  height: 320px;
+  left: 50px;
+  top: 80px;
+  background: #bfbfbf;
+  border-radius: 41px;
+  position: relative;
+}
+
+.red-square {
+  width: 550px;
+  height: 320px;
+  background: #dc2e2e;
+  left: -50px;
+  border-radius: 41px;
+  position: relative;
+  text-align: center;
+}
+
+.subtitle_bk {
+  font-size: 150%;
+}
+
+.square-container,
+.flex {
+  display: flex;
+  margin-top: 14px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.title_quisom {
+  padding-top: 15px;
+  color: white;
+  font: bold;
+  font-size: 25px;
+}
+
+.p_quisom {
+  color: white;
+  padding-top: 15px;
+  margin-right: 25px;
+  margin-left: 25px;
+  font-size: 18px;
+}
+
+.thay_fighter {
+  position: absolute;
+  height: 300px;
+  width: auto;
+  top: 20px;
+  left: 20px;
+}
+
+.background-title {
+  background-color: #dc2e2e;
+  height: 35px;
+  width: 380px;
+  border-radius: 41px;
+  justify-items: center;
+  text-align: center;
+}
+
+.premium-icon {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  z-index: 1;
+  transition: transform 0.3s;
+}
+
+  .star-icon {
+    width: 35px;
+    height: auto;
+  }
+
+@media (max-width: 600px) {
+  h1.bk_title {
+    font-size: 50px;
+  }
+
+  .gray-square {
+    width: 350px;
+    height: 220px;
+    left: 50px;
+    top: 80px;
+    background: #bfbfbf;
+    border-radius: 41px;
+    position: relative;
+  }
+
+  .red-square {
+    width: 350px;
+    height: 220px;
+    background: #dc2e2e;
+    left: -50px;
+    border-radius: 41px;
+    position: relative;
+    text-align: center;
+  }
+
+  .thay_fighter {
+    position: absolute;
+    height: 200px;
+    width: auto;
+    top: 20px;
+    left: 20px;
+  }
+
+  .square-container {
+    display: flex;
+    margin-top: 14px;
+    justify-content: center;
+  }
+
+  .background-title {
+    background-color: #dc2e2e;
+    height: 68px;
+    width: 250px;
+    border-radius: 41px;
+    text-align: center;
+  }
+
+  .p_quisom {
+    color: white;
+    padding-top: 2px;
+    margin-right: 25px;
+    margin-left: 25px;
+    font-size: 13px;
+  }
+
+  .title_quisom {
+    padding-top: 15px;
+    color: white;
+    font: bold;
+    font-size: 25px;
+  }
+
+  .square-container,
+  .flex {
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+  .premium-icon {
+    position: absolute;
+    top: 30px;
+    right: 70px;
+    z-index: 1;
+    transition: transform 0.3s;
+  }
+
+    .star-icon {
+      width: 35px;
+      height: auto;
+    }
+}

@@ -1,0 +1,4 @@
+h1{
+    font-size: 50px;
+    @apply bg-red-600 text-white;
+}

@@ -1,0 +1,224 @@
+<div class="sm:text-center aclonica-font fondo_bk overflow-auto">
+  <h1 class="text-center ">DIE<span class="text-red-600">TAS</span></h1>
+  <div class="IMC">
+    <div class="grid grid-cols-1">
+      <div class="mb-4">
+        <h2 class="text-lg sm:text-2xl text-center">CALCULAR TU ÍNDICE DE MASA CORPORAL</h2>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4">
+      <div class="flex">
+        <input type="text" placeholder="Estatura" class="w-full px-3 py-2 border rounded-md" [(ngModel)]="height">
+        <span class="ml-2">cm</span>
+      </div>
+      <div class="flex">
+        <input type="text" placeholder="Peso" class="w-full px-3 py-2 border rounded-md" [(ngModel)]="weight">
+        <span class="ml-2">kg</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 mt-4">
+      <div>
+        <button class="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-500"
+          (click)="calculate()">Calcular</button>
+      </div>
+      <div class="mt-2 sm:mt-0">
+        <p>TU IMC ES: {{ result !== null ? result.toFixed(2) : '__' }}</p>
+        <p *ngIf="errorMessage" class="text-red-600">{{ errorMessage }}</p>
+      </div>
+    </div>
+    <div class="text-center text-white grid grid-cols-1 sm:grid-cols-4 sm:mt-4">
+      <div class="bg-red-600 rounded-sm mb-2 sm:mr-4 flex flex-col" [ngClass]="{'flash': flashingIndex === 0}">
+        <span class="mr-2">IMC < 18.5</span>
+            <span>Peso Bajo</span>
+      </div>
+      <div class=" bg-red-600 rounded-sm mb-2 sm:mr-4 flex flex-col" [ngClass]="{'flash': flashingIndex === 1}">
+        <span class="mr-2">18.5 < 24.9</span>
+            <span>Normal</span>
+      </div>
+      <div class=" bg-red-600 rounded-sm mb-2 sm:mr-4 flex flex-col" [ngClass]="{'flash': flashingIndex === 2}">
+        <span class="mr-2">25 < 29.9</span>
+            <span>Sobrepeso</span>
+      </div>
+      <div class=" bg-red-600 rounded-sm mb-2 sm:mr-4 flex flex-col" [ngClass]="{'flash': flashingIndex === 3}">
+        <span class="mr-2">IMC > 30</span>
+        <span>Obesidad</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <h1 class="text-center">TI<span class="text-red-600">POS</span></h1>
+    <!-- Pantalla de carga mientras se obtienen los productos del merch -->
+    <div class="flex items-center justify-center my-8" *ngIf="loading; else dietsContainer">
+      <div class="relative h-12 w-12">
+        <div class="absolute inset-0 h-12 w-12 rounded-full border-t-4 border-b-4 border-gray-200"></div>
+        <div class="absolute inset-0 h-12 w-12 rounded-full border-t-4 border-b-4 border-red-500 animate-spin"></div>
+        <img src="../../../assets/img/my_logo.webp" class="absolute inset-2 rounded-full h-8 w-8">
+      </div>
+    </div>
+    <ng-template #dietsContainer>
+      <!-- Button to activate admin mode -->
+      <div class="flex flex-col justify-center items-center mb-4 mt-4" *ngIf="role == 'Admin'">
+        <div class="w-2/4 h-auto bg-red-600 rounded-full">
+          <p class="my-2 mx-2 text-3xl text-white">HERRAMIENTAS DE ADMINISTRACIÓN</p>
+          <div *ngIf="infoAdmin!=''" class="text-2xl text-red-600 bg-white w-full rounded-md">
+            <p class="py-1">{{infoAdmin}}</p>
+          </div>
+          <!-- Botones -->
+          <div class="flex flex-row my-3 justify-center">
+            <button
+              class="bg-white rounded-full w-52 mx-3 px-1 py-1 text-yellow-500 border border-solid border-yellow-500 hover:scale-125 transition-transform duration-300"
+              (click)="activateEditMode()">Editar
+              dieta
+            </button>
+            <button
+              class="bg-white rounded-full w-52 mx-3 px-1 py-1 text-red-500 border border-solid border-red-500 hover:scale-125 transition-transform duration-300"
+              (click)="activateDeleteMode()">Eliminar
+              dieta
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="TIPES text-justify mb-5" *ngFor="let diet of diets">
+        <div class="border-b-4">
+          <h2 class="text-xl"><b>{{diet.title}}</b></h2>
+          <p>{{diet.description}}</p>
+          <div class="text-end mb-8">
+            <button class="bg-white text-red-600 rounded-lg  px-4 py-2 hover:bg-red-500"
+              (click)="openModal(diet.content)">Leer
+              más</button>
+            <div
+              [ngClass]="{'fixed inset-0 flex items-center justify-center z-50': modalStates[diet.content], 'hidden': !modalStates[diet.content]}">
+              <div class="absolute inset-0 backdrop-blur-xl"></div>
+              <div class="bg-white p-2 rounded-lg z-50">
+                <img [src]="'../../../assets/img/img_dietas/' + diet.content" style="width: 600px; height: 700px;">
+                <button class="mt-4 bg-red-500 text-white px-4 py-2 rounded mx-1"
+                  (click)="closeModal(diet.content)">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <svg *ngIf="editAdminMode" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='#fff'
+          class="w-9 mx-2 mt-3" (click)="openEditModal(diet.id)">
+          <path
+            d="m7 17.013 4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583v4.43zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585 1.594-1.58zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006v-1.589z">
+          </path>
+          <path
+            d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2z">
+          </path>
+        </svg>
+
+        <svg *ngIf="deleteAdminMode" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='#fff'
+          class="w-9 mx-2 mt-3" (click)="openDeleteModal(diet)">
+          <path
+            d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z">
+          </path>
+          <path d="M9 10h2v8H9zm4 0h2v8h-2z"></path>
+        </svg>
+      </div>
+      <!-- MODALS SECTION -->
+
+      <!-- EDIT MODAL -->
+      <div *ngIf="editModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50">
+        <div class="bg-white rounded-lg p-6 w-2/3 mx-auto">
+          <h2 class="text-xl font-semibold mb-4">Editar <span class="text-red-600">{{editedDiet.title}}</span></h2>
+          <form [formGroup]="editDietForm" (submit)="submitEditDietForm()">
+            <!-- Title -->
+            <div class="mb-4">
+              <label for="title" class="block text-black">Título de la Dieta:</label>
+              <input type="text" id="title" formControlName="title"
+                class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+              <!-- Mensaje de error required-->
+              <p *ngIf="editDietForm.get('title')!.hasError('required')" class="text-red-600">El título es requerido.
+              </p>
+              <!-- Mensaje de error pattern -->
+              <p *ngIf="editDietForm.get('title')!.hasError('pattern') && editDietForm.get('title')?.dirty"
+                class="text-red-600">Formato no valido.
+              </p>
+              <!-- Mensaje de error minLength -->
+              <p *ngIf="editDietForm.get('title')!.hasError('minlength') && editDietForm.get('title')?.dirty"
+                class="text-red-600">El título es demasiado
+                corto.
+              </p>
+              <!-- Mensaje de error maxLength -->
+              <p *ngIf="editDietForm.get('title')!.hasError('maxlength') && editDietForm.get('title')?.dirty"
+                class="text-red-600">El título es demasiado largo.
+              </p>
+            </div>
+            <!-- Description -->
+            <div class="mb-4">
+              <label for="description" class="block text-black">Descripción de la Dieta:</label>
+              <textarea id="description" formControlName="description"
+                class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700 h-52"></textarea>
+              <!-- Mensaje de error si el campo está vacío -->
+              <p *ngIf="editDietForm.get('description')!.hasError('required')" class="text-red-600">La descripción es
+                requerida.</p>
+              <!-- Mensaje de error si la descripción es demasiado corta -->
+              <p *ngIf="editDietForm.get('description')!.hasError('minlength')" class="text-red-600">La descripción es
+                demasiado corta.</p>
+              <!-- Mensaje de error si la descripción es demasiado larga -->
+              <p *ngIf="editDietForm.get('description')!.hasError('maxlength')" class="text-red-600">La descripción es
+                demasiado larga.</p>
+            </div>
+            <!-- Content -->
+            <div class="mb-4">
+              <label for="content" class="block text-black">Contenido de la Dieta:</label>
+              <input id="content" formControlName="content"
+                class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+              <!-- Mensaje de error si el campo está vacío -->
+              <p *ngIf="editDietForm.get('content')!.hasError('required')" class="text-red-600">El contenido es
+                requerido.</p>
+            </div>
+            <!-- Author -->
+            <div class="mb-4">
+              <label for="author" class="block text-black">Autor de la Dieta:</label>
+              <input type="text" id="author" formControlName="author"
+                class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+              <!-- Mensaje de error si el campo está vacío -->
+              <p *ngIf="editDietForm.get('author')!.hasError('required')" class="text-red-600">El autor es requerido.
+              </p>
+              <p *ngIf="editDietForm.get('author')!.hasError('pattern')" class="text-red-600">Formato no válido.
+              </p>
+            </div>
+            <!-- Botones de acción -->
+            <div class="flex justify-center">
+              <button type="button" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg mr-2"
+                (click)="closeEditModal()">Cancelar</button>
+              <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Guardar Cambios</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div>
+    <button (click)="openPopup()"
+      class="w-14 h-14 sm:w-16 sm:h-16 flex justify-center items-center chatbot-toggle-button transition-transform duration-300 transform hover:scale-110">
+      <img src="../../../assets/img/bot4.webp" alt="Chatbot Toggle">
+    </button>
+  </div>
+  <!-- CONFIRM DELETE MODAL -->
+  <div *ngIf="deleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50">
+    <div class="bg-white rounded-lg p-6 max-w-md mx-auto">
+      <h2 *ngIf="selectedDiet !== null" class="text-xl font-semibold mb-4">Eliminar <b class="text-red-600">
+          {{selectedDiet.title}}</b></h2>
+      <p *ngIf="selectedDiet !== null">¿Estás seguro de que quieres eliminar el producto con ID <span
+          class="text-red-600">
+          {{selectedDiet.id}}</span>?</p>
+      <p *ngIf="selectedDiet === null">Por favor, selecciona un producto para eliminar.</p>
+      <div class="flex justify-end mt-4">
+        <button type="button" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg mr-2"
+          (click)="cancelDelete()">Cancelar</button>
+        <button type="button" class="bg-red-500 text-white px-4 py-2 rounded-lg"
+          (click)="confirmDelete()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+  <!-- END DELETE MODAL -->
+  <div>
+    <button (click)="openPopup()"
+      class="w-16 h-16 flex justify-center items-center chatbot-toggle-button transition-transform duration-300 transform hover:scale-110">
+      <img src="../../../assets/img/bot4.webp" alt="Chatbot Toggle">
+    </button>
+  </div>
+</div>

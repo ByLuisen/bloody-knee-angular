@@ -1,0 +1,82 @@
+<div class="sm:hidden md:hidden block">
+  <div class="absolute bottom-1 left-3 cursor-pointer z-40">
+    <button class="fixed-button hover:border-2 hover:border-solid hover:border-white w-50" (click)="expandDiv()">
+      <svg width="50" height="50" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="35.6348" cy="35.6348" r="35.6348" fill="red" />
+        <path
+          d="M21.1214 27.7259L21.1111 21.7845L50.7653 21.7328L50.7693 24.018L44.6058 27.685L21.1214 27.7259ZM21.1405 38.6244L21.1301 32.683L50.7843 32.6312L50.7883 34.9164L44.6248 38.5834L21.1405 38.6244ZM21.1595 49.5228L21.1491 43.5814L50.8033 43.5297L50.8073 45.8148L44.6438 49.4818L21.1595 49.5228Z"
+          fill="#ffffff" />
+      </svg>
+
+    </button>
+  </div>
+  <div id="expandibleDiv" class="expandible-div mx-auto aclonica-font text-white z-50">
+    <ul class="flex flex-col mt-3">
+      <li (click)="expandDiv()">
+        <a role="button" class="flex" routerLink="/home">
+          <img class="icon" src="../../../../assets/img/my_logo.webp" alt="" />
+          <span class="nav-text">Home</span>
+        </a>
+      </li>
+      <hr>
+      <li (click)="expandDiv()">
+        <a role="button" class="flex" routerLink="/thaivideos">
+          <img class="icon" src="../../../../assets/img/icons8_boxer_512.webp" alt="" />
+          <span class="nav-text">Muay Thai</span>
+        </a>
+      </li>
+      <hr>
+      <li (click)="expandDiv()">
+        <a role="button" class="flex" routerLink="/boxingvideos">
+          <img class="icon" src="../../../../assets/img/boxeo1.webp" alt="" />
+          <span class="nav-text"> Boxeo </span>
+        </a>
+      </li>
+      <hr>
+      <li (click)="expandDiv()">
+        <a role="button" class="flex" routerLink="/fitnessvideos">
+          <img class="icon" src="../../../../assets/img/icons8_fitness_501.webp" alt="" />
+          <span class="nav-text"> Fitness </span>
+        </a>
+      </li>
+      <hr>
+      <li (click)="expandDiv()">
+        <a role="button" class="flex" routerLink="/diets">
+          <img class="icon" src="../../../../assets/img/dietas1.webp" alt="" />
+          <span class="nav-text">Dietas</span>
+        </a>
+      </li>
+      <hr>
+      <li (click)="expandDiv()">
+        <a role="button" class="flex" routerLink="/merchandising">
+          <img class="icon" src="../../../../assets/img/eccommerce1.webp" alt="" />
+          <span class="nav-text">Merchandising</span>
+        </a>
+      </li>
+      <hr>
+      <div *ngIf="auth.user$ | async as user">
+        <li (click)="expandDiv()">
+          <a routerLink="/profile" class="flex">
+            <img class="rounded-full icon" [src]="user.picture" alt="Profile Image">
+            <p>Perfil</p>
+          </a>
+        </li>
+        <hr>
+      </div>
+      <li class="cursor-pointer" (click)="expandDiv()">
+        <a class="flex" (click)="auth.logout({ logoutParams: { returnTo: document.location.origin } })">
+          <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+            <img src="../../../assets/img/logout.webp" alt="Logout Image" class="icon">
+            <p>Logout</p>
+          </ng-container>
+        </a>
+        <ng-template #loggedOut>
+          <a class="flex" (click)="auth.loginWithRedirect()">
+            <img src="../../../assets/img/login1.webp" alt="Profile Image" class="icon">
+            <p>Login</p>
+          </a>
+        </ng-template>
+      </li>
+    </ul>
+  </div>
+</div>

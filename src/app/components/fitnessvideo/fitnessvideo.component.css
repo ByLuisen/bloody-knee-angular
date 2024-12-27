@@ -1,0 +1,65 @@
+h1 {
+    font-size: 60px;
+    color: black;
+}
+
+h2 {
+    font-size: 30px;
+    color: black;
+}
+.premium-icon {
+
+  position:
+    absolute;
+
+  top:
+    15px;
+
+  right:
+    10px;
+
+  z-index:
+    1;
+
+  transition: transform 0.3s;
+
+}
+
+
+.star-icon {
+
+  width:
+    35px;
+
+  height:
+    auto;
+
+}
+
+
+.video-container:hover .premium-icon {
+
+  transform:
+    scale(1.5);
+}
+
+/* Mantener el efecto hover cuando el botón está activo */
+button.active {
+  background-color: #cbd5e0;
+  color: #1a202c;
+}
+
+@media (max-width: 600px) {
+  .premium-icon {
+    position: absolute;
+    top: 30px;
+    right: 70px;
+    z-index: 1;
+    transition: transform 0.3s;
+  }
+
+    .star-icon {
+      width: 35px;
+      height: auto;
+    }
+}

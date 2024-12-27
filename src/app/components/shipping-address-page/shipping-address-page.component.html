@@ -1,0 +1,254 @@
+<div class="fondo_bk">
+  <div class="container mx-auto px-4 py-10">
+
+    <!-- Principal container -->
+    <div class="flex flex-col md:flex-row justify-center gap-4">
+
+      <!-- Form -->
+      <div class="w-full max-w-3xl mx-auto flex-1">
+        <ol class="flex items-center w-full mb-4 sm:mb-5">
+          <li
+            class="flex w-full items-center text-red-600 dark:text-red-500 after:content-[''] after:w-full after:h-1 after:border-b after:border-red-300 after:border-4 after:inline-block dark:after:border-red-800">
+            <div
+              class="flex items-center justify-center w-10 h-10 bg-red-300 rounded-full lg:h-12 lg:w-12 dark:bg-red-800 shrink-0">
+              <svg class="w-4 h-4 text-red-600 lg:w-6 lg:h-6 dark:text-red-300" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
+                <path
+                  d="M18 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2ZM6.5 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3.014 13.021l.157-.625A3.427 3.427 0 0 1 6.5 9.571a3.426 3.426 0 0 1 3.322 2.805l.159.622-6.967.023ZM16 12h-3a1 1 0 0 1 0-2h3a1 1 0 0 1 0 2Zm0-3h-3a1 1 0 1 1 0-2h3a1 1 0 1 1 0 2Zm0-3h-3a1 1 0 1 1 0-2h3a1 1 0 1 1 0 2Z" />
+              </svg>
+            </div>
+          </li>
+          <li
+            class="flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:border-4 after:inline-block dark:after:border-gray-700">
+            <div
+              class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+              <svg class="w-4 h-4 text-red-600 lg:w-6 lg:h-6 dark:text-red-300" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
+                <path d="M18 0H2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2ZM2 12V6h16v6H2Z" />
+                <path d="M6 8H4a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2Zm8 0H9a1 1 0 0 0 0 2h5a1 1 0 1 0 0-2Z" />
+              </svg>
+            </div>
+          </li>
+          <li class="flex items-center w-full">
+            <div
+              class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+              <svg class="w-4 h-4 text-red-600 lg:w-6 lg:h-6 dark:text-red-300" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                <path
+                  d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2ZM7 2h4v3H7V2Zm5.7 8.289-3.975 3.857a1 1 0 0 1-1.393 0L5.3 12.182a1.002 1.002 0 1 1 1.4-1.436l1.328 1.289 3.28-3.181a1 1 0 1 1 1.392 1.435Z" />
+              </svg>
+            </div>
+          </li>
+        </ol>
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md border dark:border-gray-700">
+          <form [formGroup]="shippingAddress" (ngSubmit)="sendShippingAddress()">
+            <h1 class="text-2xl font-medium text-red-600">Enviar a</h1>
+            <small>Los campos con este símbolo (*) són requeridos.</small>
+
+            <!-- Shipping Address -->
+            <div class="mb-6">
+              <div class="mt-4">
+                <label for="country" class="block text-gray-700 dark:text-white mb-1">País/Región</label>
+                <input type="text" id="address" name="country" formControlName="country"
+                  class="w-full rounded-lg border py-2 px-3 bg-gray-200 dark:bg-gray-700 dark:text-white dark:border-none"
+                  readonly>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 mt-4 h-24">
+                <div>
+                  <label for="first_name" class="block mb-1">Nombre*</label>
+                  <input type="text" id="first_name" name="first_name" formControlName="first_name" maxlength="50"
+                    class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"
+                    [class.border-red-500]="shippingAddress.get('first_name')?.invalid && shippingAddress.get('first_name')?.touched">
+                  <small
+                    *ngIf="shippingAddress.get('first_name')?.errors?.['required'] && shippingAddress.get('first_name')?.touched"
+                    class="text-red-500">Introduce un nombre.</small>
+                  <small
+                    *ngIf="shippingAddress.get('first_name')?.errors?.['pattern'] && shippingAddress.get('first_name')?.touched"
+                    class="text-red-500">Ingrese un nombre válido.</small>
+                </div>
+                <div>
+                  <label for="last_name" class="block text-gray-700 dark:text-white mb-1">Apellidos*</label>
+                  <input type="text" id="last_name" name="last_name" formControlName="last_name" maxlength="50"
+                    class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"
+                    [class.border-red-500]="shippingAddress.get('last_name')?.invalid && shippingAddress.get('last_name')?.touched">
+                  <small
+                    *ngIf="shippingAddress.get('last_name')?.errors?.['required'] && shippingAddress.get('last_name')?.touched"
+                    class="text-red-500">Introduce los apellidos.</small>
+                  <small
+                    *ngIf="shippingAddress.get('last_name')?.errors?.['pattern'] && shippingAddress.get('last_name')?.touched"
+                    class="text-red-500">Ingrese apellidos válidos.</small>
+                </div>
+              </div>
+
+              <div class="">
+                <label for="phone" class="block text-gray-700 dark:text-white mb-1">Número de teléfono*</label>
+                <input type="text" id="phone" name="phone" formControlName="phone" maxlength="15"
+                  class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"
+                  [class.border-red-500]="shippingAddress.get('phone')?.invalid && shippingAddress.get('phone')?.touched">
+                <small
+                  *ngIf="shippingAddress.get('phone')?.errors?.['required'] && shippingAddress.get('phone')?.touched"
+                  class="text-red-500">Introduce un número de teléfono para que podamos llamar si hay algún problema con
+                  la entrega.</small>
+                <small
+                  *ngIf="shippingAddress.get('phone')?.errors?.['pattern'] && shippingAddress.get('phone')?.touched"
+                  class="text-red-500">Ingrese un número de teléfono válido.</small>
+              </div>
+              <small>Se usa para ayudar con la entrega</small>
+
+              <div class="mt-4 h-24">
+                <label for="address" class="block text-gray-700 dark:text-white mb-1">Línea de dirección*</label>
+                <input type="text" id="address" name="address" formControlName="address" maxlength="255"
+                  class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"
+                  placeholder="Nombre y número de la calle"
+                  [class.border-red-500]="shippingAddress.get('address')?.invalid && shippingAddress.get('address')?.touched">
+                <small
+                  *ngIf="shippingAddress.get('address')?.errors?.['required'] && shippingAddress.get('address')?.touched"
+                  class="text-red-500">Introduce una dirección.</small>
+                <small
+                  *ngIf="shippingAddress.get('address')?.errors?.['pattern'] && shippingAddress.get('address')?.touched"
+                  class="text-red-500">Ingrese una dirección válida.</small>
+              </div>
+
+              <div>
+                <label for="province" class="block text-gray-700 dark:text-white mb-1">Provincia</label>
+                <input type="text" id="province" name="province" formControlName="province"
+                  class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"
+                  [class.border-red-500]="shippingAddress.get('province')?.invalid && shippingAddress.get('province')?.touched">
+                <small
+                  *ngIf="shippingAddress.get('province')?.errors?.['pattern'] && shippingAddress.get('province')?.touched"
+                  class="text-red-500">Ingrese una provincia válida.</small>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 mt-4">
+                <div>
+                  <label for="city" class="block text-gray-700 dark:text-white mb-1">Ciudad*</label>
+                  <input type="text" id="city" name="city" formControlName="city" maxlength="100"
+                    class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"
+                    [class.border-red-500]="shippingAddress.get('city')?.invalid && shippingAddress.get('city')?.touched">
+                  <small
+                    *ngIf="shippingAddress.get('city')?.errors?.['required'] && shippingAddress.get('city')?.touched"
+                    class="text-red-500">Introduce un nombre de ciudad.</small>
+                  <small
+                    *ngIf="shippingAddress.get('city')?.errors?.['pattern'] && shippingAddress.get('city')?.touched"
+                    class="text-red-500">Ingrese una ciudad válida.</small>
+                </div>
+                <div>
+                  <label for="zip" class="block text-gray-700 dark:text-white mb-1">Código postal*</label>
+                  <input type="text" id="zip" name="zip" formControlName="zip" maxlength="5"
+                    class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none"
+                    [class.border-red-500]="shippingAddress.get('zip')?.invalid && shippingAddress.get('zip')?.touched">
+                  <small *ngIf="shippingAddress.get('zip')?.errors?.['required'] && shippingAddress.get('zip')?.touched"
+                    class="text-red-500">Especifica un código postal.</small>
+                  <small *ngIf="shippingAddress.get('zip')?.errors?.['pattern'] && shippingAddress.get('zip')?.touched"
+                    class="text-red-500">Ingrese un código postal válido.</small>
+                </div>
+              </div>
+            </div>
+
+            <hr class="h-px bg-gray-400 border-0 dark:bg-gray-600">
+            <div class="mt-6 flex justify-end">
+              <div (click)="goBack()"
+                class="cursor-pointer bg-gray-800 text-white px-4 me-4 py-2 rounded-lg hover:bg-gray-700 dark:bg-red-600 dark:text-white dark:hover:bg-red-900">
+                Cancelar</div>
+              <button type="button" type="submit"
+                class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                Continuar y pagar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Carrito de compras -->
+      <div
+        class="flex mt-16 h-96 flex-col overflow-y-scroll bg-white rounded-lg shadow-2xl border dark:border-gray-700">
+        <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+          <!-- Cart header -->
+          <div class="flex items-start justify-between">
+            <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Cesta</h2>
+          </div>
+
+          <!-- List of products in the cart -->
+          <div class="mt-8" *ngIf="products">
+            <div class="flow-root">
+              <ul role="list" class="-my-6 divide-y divide-gray-200">
+                <!-- List item for each product in the cart -->
+                <li class="flex py-6" *ngFor="let product of products; let i = index">
+                  <!-- Product image -->
+                  <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 cursor-pointer">
+                    <img [src]="'../../../assets/img/imgs_productos/' + product.url_img1 + '.webp'">
+                  </div>
+
+                  <!-- Product details -->
+                  <div class="ml-4 flex flex-1 flex-col">
+                    <div>
+                      <!-- Product name and price -->
+                      <div class="flex justify-between text-base font-medium text-gray-900">
+                        <h3 class="cursor-pointer">
+                          {{ product.name }}
+                        </h3>
+                        <p class="ml-4">{{ product.price }}€</p>
+                      </div>
+                      <p class="mt-1 text-sm text-gray-500">{{product.brand}}</p>
+                    </div>
+                    <div class="flex flex-1 items-end justify-between text-sm">
+                      <!-- Product quantity and button to delete it -->
+                      <p class="text-gray-500">Cantidad {{ product.quantity }}</p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subtotal and action buttons -->
+        <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+          <div class="flex justify-between text-sm font-normal text-gray-900" *ngIf="products.length != 0">
+            <p>{{ calculateTotalProducts() }} producto/s:</p>
+            <p>{{ calculateTotalAmount() }}€</p>
+          </div>
+          <div class="flex justify-between text-sm font-normal text-gray-900" *ngIf="products.length != 0">
+            <p>Envío:</p>
+            <p>4.99€</p>
+          </div>
+          <div class="flex justify-between text-base font-medium text-red-600" *ngIf="products.length != 0">
+            <p>Importe total (IVA incl.):</p>
+            <p>{{( calculateTotalAmount() + 4.99).toFixed(2) }}€</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading screen while the customer is redirected to the checkout -->
+<app-loading-screen *ngIf="loading"></app-loading-screen>
+
+
+<!-- Max quantity product update notification -->
+<div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50"
+  *ngIf="updated">
+  <div id="toast-warning"
+    class="relative flex flex-col items-center w-full max-w-md p-4 text-gray-800 bg-red-100 rounded-lg shadow-lg border-red-600 border"
+    role="alert">
+    <div
+      class="absolute top-0 right-0 mr-2 mt-2 cursor-pointer text-red-600 dark:text-red-200 hover:text-red-800 dark:hover:text-white"
+      (click)="updated = false">
+      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="m6 18 12-12M6 6l12 12" />
+      </svg>
+    </div>
+    <div
+      class="inline-flex items-center justify-center flex-shrink-0 w-10 h-10 text-red-500 bg-red-200 rounded-full dark:bg-red-600 dark:text-red-200">
+      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+        viewBox="0 0 20 20">
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z" />
+      </svg>
+      <span class="sr-only">Warning icon</span>
+    </div>
+    <div class="mt-4 text-sm font-normal">Hemos actualizado tu cesta debido a falta de stock.</div>
+  </div>
+</div>

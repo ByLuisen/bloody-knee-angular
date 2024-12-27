@@ -1,0 +1,69 @@
+h1 {
+    font-size: 60px;
+    color: black;
+}
+
+h2 {
+    font-size: 30px;
+    color: rgb(0, 0, 0);
+}
+
+.range-input {
+    background: transparent;
+    -webkit-appearance: none;
+    /* Elimina la apariencia predeterminada de WebKit */
+    width: 50%;
+    /* Ancho reducido del slider */
+    height: 15px;
+    /* Altura del riel del slider */
+    margin: 0 auto;
+    /* Centrar el slider */
+}
+
+/* Estilo para el thumb del slider */
+.range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /* Elimina la apariencia predeterminada de WebKit */
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    /* Para darle forma circular al thumb */
+    cursor: pointer;
+    margin-top: -5px;
+    /* Ajuste para centrar verticalmente */
+}
+
+.range-input::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    /* Para darle forma circular al thumb */
+    cursor: pointer;
+    margin-top: -5px;
+    /* Ajuste para centrar verticalmente */
+}
+
+/* Estilos adicionales para el riel del slider */
+.range-input::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    background-color: rgb(255, 0, 0);
+    border-radius: 5px;
+    /* Bordes redondeados para el riel */
+}
+
+.range-input::-moz-range-track {
+    width: 100%;
+    height: 5px;
+    background-color: rgb(255, 0, 0);
+    border-radius: 5px;
+    /* Bordes redondeados para el riel */
+}
+
+@media (max-width: 768px) {
+    .tamaño {
+        font-size: 43px;
+    }
+}

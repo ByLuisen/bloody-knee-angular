@@ -1,0 +1,185 @@
+<h1 class="sm:text-center text-center">MIS PEDIDOS</h1>
+
+<section>
+  <div class="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
+    <!-- Pantalla de carga mientras se obtienen los productos del merch -->
+    <div class="flex items-center justify-center my-8" *ngIf="loading; else ordersContainer">
+      <div class="relative h-12 w-12">
+        <div class="absolute inset-0 h-12 w-12 rounded-full border-t-4 border-b-4 border-gray-200"></div>
+        <div class="absolute inset-0 h-12 w-12 rounded-full border-t-4 border-b-4 border-red-500 animate-spin"></div>
+        <img src="../../../assets/img/my_logo.webp" class="absolute inset-2 rounded-full h-8 w-8">
+      </div>
+    </div>
+
+    <ng-template #ordersContainer>
+
+      <div *ngIf="orders.length <= 0; else ordersExists"
+        class="flex justify-center main-box border border-gray-400 rounded-xl p-6 max-w-xl max-lg:mx-auto lg:max-w-full my-14">
+        <div class="text-center">
+          <p>Todavía no has hecho ningún pedido.</p>
+          <button type="button" class="font-medium text-red-600 hover:text-red-500" routerLink="/merchandising">
+            Comprar en nuestro merch
+            <span aria-hidden="true"> &rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <ng-template #ordersExists>
+
+        <div
+          class="bg-white main-box border border-gray-200 rounded-xl pt-6 max-w-xl max-lg:mx-auto lg:max-w-full my-14"
+          *ngFor="let order of orders">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between px-6 pb-6 border-b border-gray-200">
+            <div class="data">
+              <p class="font-semibold text-base leading-7 text-black">Pedido Nº <span
+                  class="text-red-600 font-medium">#{{
+                  order.id }}</span></p>
+              <p class="font-semibold text-base leading-7 text-black">Pedido realizado: <span
+                  class="text-gray-400 font-medium">{{ order.order_date | date:"dd 'de' MMM 'de' yyyy" }}</span></p>
+            </div>
+            <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3 ">
+              <div class="flex gap-3 lg:block items-center">
+                <p class="font-semibold text-base leading-none text-black">Enviar a
+                </p>
+                <div class="tooltip text-red-500">
+                  <div class="flex items-center">
+                    {{ order.full_name }}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="gray" class="w-5 h-5 ms-2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </div>
+                  <div class="tooltiptext ">
+                    <p class="font-bold text-black">{{ order.full_name }}</p>
+                    <p class="text-black">{{ order.address }}</p>
+                    <p class="text-black">{{ order.city }}, </p>
+                    <div class="flex justify-center">
+                      <p *ngIf="order.province" class="text-black">{{ order.province }},</p>
+                      <p class="text-black">{{ order.zip }}</p>
+                    </div>
+                    <p class="text-black">{{ order.country }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3">
+              <div class="flex gap-3 lg:block">
+                <p class="font-semibold text-base leading-7 text-black">
+                  Fecha de entrega</p>
+                <p class="font-medium text-base whitespace-nowrap leading-7 text-emerald-500">
+                  {{ order.date_delivery | date:"dd 'de' MMM 'de' yyyy" }}</p>
+              </div>
+            </div>
+            <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3 ">
+              <div class="flex gap-3 lg:block">
+                <p class="font-semibold text-base leading-7 text-black">Status
+                </p>
+                <p
+                  class="font-medium text-sm leading-6 whitespace-nowrap py-0.5 px-3 rounded-full bg-emerald-50 text-emerald-600">
+                  {{ order.status }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="w-full px-3 min-[400px]:px-6 lg:max-h-[40vh] max-h-[80vh] overflow-y-scroll">
+            <div class="flex flex-col lg:flex-row items-center py-6 border-b border-gray-200 gap-6 w-full"
+              *ngFor="let product of order.order_details">
+              <div class="img-box max-lg:w-full cursor-pointer">
+                <img [src]="'../../../assets/img/imgs_productos/' + product.img + '.webp'" alt="Product image"
+                  class="aspect-square w-32 lg:max-w-[140px]">
+              </div>
+              <div class="flex flex-row items-center w-full ">
+                <div class="grid grid-cols-1 lg:grid-cols-2 w-full">
+                  <div class="flex items-center">
+                    <div class="">
+                      <h2 class="font-semibold text-xl leading-8 text-black mb-3 cursor-pointer">
+                        {{ product.name }}</h2>
+                      <p class="font-normal text-lg leading-8 text-gray-500 mb-3 ">
+                        By: {{ product.brand }}</p>
+                      <div class="flex items-center ">
+                        <p class="font-medium text-base leading-7 text-black ">Cantidad: <span class="text-gray-500">{{
+                            product.quantity }}</span></p>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="grid grid-cols-5">
+                    <div class="col-span-5 lg:col-span-1 flex items-center max-lg:mt-3">
+                      <div class="flex gap-3 lg:block">
+                        <p class="font-medium text-sm leading-7 text-black">Price</p>
+                        <p class="lg:mt-4 font-medium text-sm leading-7 text-red-600">{{ product.unit_price }}€</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+          </div>
+          <div class="w-full border-t border-gray-200 px-6 flex flex-col lg:flex-row items-center" [ngClass]="{'justify-between': order.status == 'Pendiente' || order.status == 'En Proceso', 'justify-end': order.status != 'Pendiente' && order.status != 'En Proceso'}">
+            <div class="flex flex-col sm:flex-row items-center max-lg:border-b border-gray-200"
+              *ngIf="order.status == 'Pendiente' || order.status == 'En Proceso'">
+              <button (click)="cancelOrder(order)"
+                class="flex outline-0 py-6 sm:pr-6  sm:border-r border-gray-200 whitespace-nowrap gap-2 items-center justify-center font-semibold group text-lg text-black bg-white transition-all duration-500 hover:text-red-600">
+                <svg class="stroke-black transition-all duration-500 group-hover:stroke-red-600"
+                  xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <path d="M5.5 5.5L16.5 16.5M16.5 5.5L5.5 16.5" stroke="" stroke-width="1.6" stroke-linecap="round" />
+                </svg>
+
+                <p *ngIf="role != 'Admin'">Cancelar pedido</p>
+                <p *ngIf="role == 'Admin'">Reembolsar pedido</p>
+              </button>
+            </div>
+            <div class="py-6">
+              <p class="text-sm">Envío: <span>{{ order.shipping_cost
+                  }}€</span></p>
+              <p class="font-semibold text-lg text-black">Precio total: <span class="text-red-600">{{
+                  order.amount_total
+                  }}€</span></p>
+            </div>
+          </div>
+
+        </div>
+      </ng-template>
+
+    </ng-template>
+
+  </div>
+</section>
+
+<!-- Main modal -->
+<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20" *ngIf="openModal">
+  <div tabindex="-1" class="relative w-full max-w-md bg-white rounded-xl shadow">
+    <!-- Modal content -->
+    <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border-2 border-green-500">
+      <button type="button" (click)="openModal = false"
+        class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+        <svg aria-hidden="true" class="w-5 h-5" fill="green" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"></path>
+        </svg>
+        <span class="sr-only">Close modal</span>
+      </button>
+      <div
+        class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5">
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="green" viewBox="0 0 20 20">
+          <path
+            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+        </svg>
+        <span class="sr-only">Check icon</span>
+      </div>
+      <p class="text-lg font-semibold text-gray-900 dark:text-white font-sans" *ngIf="role != 'Admin'">Tu pedido ha sido cancelado correctamente</p>
+      <p class="text-lg font-semibold text-gray-900 dark:text-white font-sans" *ngIf="role == 'Admin'">El pedido ha sido reembolsado correctamente</p>
+      <p class="mb-4 font-sans" *ngIf="role != 'Admin'">Tu pedido ha sido cancelado correctamente. El reembolso será procesado y se reflejará en tu cuenta
+        lo antes posible. Gracias por tu paciencia.</p>
+      <button type="button" (click)="openModal = false"
+        class="py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:focus:ring-green-900">
+        Atrás
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,326 @@
+<div class="text-justify sm:text-center aclonica-font fondo_bk overflow-auto">
+  <!-- Merchandising banner component -->
+  <app-merchandising-banner></app-merchandising-banner>
+
+  <div class=" sm:px-10 md:px-20 pt-10">
+
+    <!-- Filter section -->
+    <h1 class="text-center mt-5 tamaño">MERCHAN<span class="text-red-600">DISING</span></h1>
+    <div
+      class="grid grid-cols-1 self-center sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 px-5 sm:px-10 md:px-20 text-center">
+      <div class="pl-2 sm:pl-10 pt-4 text-center justify-center">
+        <h2>Disponibilidad</h2>
+        <div class="flex justify-center items-center">
+          <p>En Stock ({{ contarProductosEnStock() }})</p>
+          <input type="checkbox" name="filter_stock"
+            class="w-4 h-4 rounded-lg mr-2 ml-1 bg-red-100 border-red-500 focus:bg-red-200 focus:border-red-600"
+            (change)="mostrarEnStock = !mostrarEnStock">
+          <p class="ml-3">Fuera de Stock ({{ contarProductosFueraDeStock() }})</p>
+          <input type="checkbox" name="filter_stock"
+            class="w-4 h-4 rounded-lg mr-2 ml-1 bg-red-100 border-red-500 focus:bg-red-200 focus:border-red-600"
+            (change)="mostrarFueraDeStock = !mostrarFueraDeStock">
+        </div>
+      </div>
+      <div class="pl-2 sm:pl-10 pt-4 text-center justify-center">
+        <h2>Precio</h2>
+        <input type="range" min="0" max="150" value="0" class="range-input" #priceRangeInput (input)="onPriceChange()">
+        <p>Rango de precio: $0 - ${{priceRangeInput.value }}</p>
+      </div>
+    </div>
+    <!-- end filter section -->
+
+    <!-- Button to activate admin mode -->
+    <div class="flex flex-col justify-center items-center mb-4 mt-4" *ngIf="role == 'Admin'">
+      <div class="w-2/4 h-auto bg-red-600 rounded-full">
+        <p class="my-2 mx-2 text-3xl text-white">HERRAMIENTAS DE ADMINISTRACIÓN</p>
+        <div *ngIf="infoAdmin!=''" class="text-2xl text-red-600 bg-white w-full rounded-md">
+          <p class="py-1">{{infoAdmin}}</p>
+        </div>
+        <div class="flex flex-row my-3 justify-center">
+          <!-- <button
+            class="bg-white rounded-full w-52 mx-3 px-1 py-1 text-green-500 border border-solid border-green-500 hover:scale-125 transition-transform duration-300"
+            (click)="addProduct()">Agregar producto
+          </button> -->
+          <button
+            class="bg-white rounded-full w-52 mx-3 px-1 py-1 text-yellow-500 border border-solid border-yellow-500 hover:scale-125 transition-transform duration-300"
+            (click)="editProduct()">Editar producto</button>
+          <button
+            class="bg-white rounded-full w-52 mx-3 px-1 py-1 text-red-500 border border-solid border-red-500 hover:scale-125 transition-transform duration-300"
+            (click)="deleteProduct()">Eliminar producto</button>
+        </div>
+      </div>
+    </div>
+    <!-- Modal para editar producto -->
+    <div *ngIf="editModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50">
+      <div class="bg-white rounded-lg p-6 w-2/3 mx-auto">
+        <h2 class="text-xl font-semibold mb-4">Editar <span class="text-red-600"> {{editedProduct.name}}</span></h2>
+        <!-- Aquí va tu formulario para editar el producto -->
+        <form (submit)="submitEditProductForm()">
+          <!-- Campos de formulario para editar el producto -->
+          <!-- Name -->
+          <div class="mb-4">
+            <label for="productName" class="block text-black">Nombre del Producto:</label>
+            <input type="text" id="productName" name="productName" [(ngModel)]="editedProduct.name"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+          </div>
+          <!-- Brand -->
+          <div class="mb-4">
+            <label for="brand_id" class="block text-black">Marca:</label>
+            <select id="brand_id" name="brand_id" [(ngModel)]="editedProduct.brand"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+              <option *ngFor="let brand of brands" [selected]="brand.name === editedProduct.brand">
+                {{ brand.name }}</option>
+            </select>
+          </div>
+          <!-- Category -->
+          <div class="mb-4">
+            <label for="category_id" class="block text-black">Categoría:</label>
+            <select id="category_id" name="category_id" [(ngModel)]="editedProduct.category"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+              <option *ngFor="let category of categories" [ngValue]="editedProduct.category"
+                [selected]="category.name === editedProduct.category">{{ category.name }}</option>
+            </select>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-4">
+            <label for="productDescription" class="block text-black">Descripción del Producto:</label>
+            <textarea id="productDescription" name="productDescription" [(ngModel)]="editedProduct.description"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700"></textarea>
+          </div>
+          <!-- Price -->
+          <div class="mb-4">
+            <label for="productPrice" class="block text-black">Precio:</label>
+            <input type="number" id="productPrice" name="productPrice" [(ngModel)]="editedProduct.price"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+          </div>
+          <!-- Image 1 -->
+          <div class="mb-4">
+            <label for="productUrl1" class="block text-black">Nombre de la primera foto:</label>
+            <input type="text" id="productUrl1" name="productUrl1" [(ngModel)]="editedProduct.url_img1"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+          </div>
+          <!-- Image 2 -->
+          <div class="mb-4">
+            <label for="productUrl2" class="block text-black">Nombre de la segunda foto:</label>
+            <input type="text" id="productUrl2" name="productUrl2" [(ngModel)]="editedProduct.url_img2"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center  text-red-700">
+          </div>
+          <!-- Image 3 -->
+          <div class="mb-4">
+            <label for="productUrl3" class="block text-black">Nombre de la tercera foto:</label>
+            <input type="text" id="productUrl3" name="productUrl3" [(ngModel)]="editedProduct.url_img3"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+          </div>
+          <!-- Info of stock ammount -->
+          <div class="mb-4">
+            <label for="stock" class="block text-black">Información del stock</label>
+            <input type="number" id="stock" name="stock" [(ngModel)]="editedProduct.stock"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+          </div>
+          <!-- Botones de acción -->
+          <div class="flex justify-center">
+            <button type="button" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg mr-2"
+              (click)="closeEditModal()">Cancelar</button>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Guardar Cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal para añadir un producto -->
+    <div *ngIf="createModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50">
+      <div class="bg-white rounded-lg p-6 w-2/3 mx-auto">
+        <h2 class="text-xl font-semibold mb-4">Crear producto</h2>
+        <!-- Aquí va tu formulario para crear el producto -->
+        <form [formGroup]="creationForm" (submit)="submitCreateProductForm()">
+          <!-- Name -->
+          <div class="mb-4">
+            <label for="name" class="block text-black">Nombre del Producto:</label>
+            <input type="text" id="name" name="name" formControlName="name"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+            <!-- Error requerido -->
+            <span *ngIf="creationForm.get('name')?.hasError('required') && creationForm.get('name')?.touched"
+              class="text-red-500">Campo
+              obligatorio</span>
+            <!-- Error formato -->
+            <span *ngIf="creationForm.get('name')?.hasError('pattern') && creationForm.get('name')?.dirty"
+              class="text-red-500">Formato incorrecto</span>
+          </div>
+          <!-- Marca -->
+          <div class="mb-4">
+            <label for="brandId" class="block text-black">Marca:</label>
+            <select id="brandId" name="brandId"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700"
+              formControlName="brandId">
+              <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.name }}</option>
+            </select>
+            <!-- Error requerido -->
+            <span *ngIf="creationForm.get('brandId')?.hasError('required') && creationForm.get('brandId')?.touched"
+              class="text-red-500">Campo
+              obligatorio</span>
+          </div>
+          <!-- Categoria -->
+          <div class="mb-4">
+            <label for="categoryId" class="block text-black">Categoria:</label>
+            <select id="categoryId" name="categoryId"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700"
+              formControlName="categoryId">
+              <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+            </select>
+            <!-- Error requerido -->
+            <span
+              *ngIf="creationForm.get('categoryId')?.hasError('required') && creationForm.get('categoryId')?.touched"
+              class="text-red-500">Campo
+              obligatorio</span>
+          </div>
+          <!-- Description -->
+          <div class="mb-4">
+            <label for="description" class="block text-black">Descripción del Producto:</label>
+            <textarea id="description" name="description" formControlName="description"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700"></textarea>
+            <!-- Error requerido -->
+            <span
+              *ngIf="creationForm.get('description')?.hasError('required') && creationForm.get('description')?.touched"
+              class="text-red-500">Campo
+              obligatorio</span>
+            <!-- Error formato -->
+            <span *ngIf="creationForm.get('description')?.hasError('pattern') && creationForm.get('description')?.dirty"
+              class="text-red-500">Formato incorrecto</span>
+          </div>
+          <!-- Price -->
+          <div class="mb-4">
+            <label for="price" class="block text-black">Precio:</label>
+            <input type="number" id="price" name="price" formControlName="price"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+            <!-- Error requerido -->
+            <span *ngIf="creationForm.get('price')?.hasError('required') && creationForm.get('price')?.touched"
+              class="text-red-500">Campo
+              obligatorio</span>
+            <!-- Error formato -->
+            <span *ngIf="creationForm.get('price')?.hasError('pattern') && creationForm.get('price')?.dirty"
+              class="text-red-500">El producto debe estar entre 5€ y 200€ </span>
+          </div>
+          <!-- Image 1 -->
+          <div class="mb-4">
+            <label for="url1" class="block text-black">Nombre de la primera foto:</label>
+            <input type="text" id="url1" name="url1" formControlName="url1"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+            <!-- Error requerido -->
+            <span *ngIf="creationForm.get('url1')?.hasError('required') && creationForm.get('url1')?.touched"
+              class="text-red-500">Campo obligatorio</span>
+          </div>
+          <!-- Upload image 1 -->
+          <div class="mb-4">
+            <label for="url1" class="block text-black">Imagen 1 del producto:</label>
+            <div class="items-center justify-center">
+              <input type="file" id="url1" name="url1" (change)="handleImageUpload1($event)"
+                class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700"
+                formControlName="url1">
+            </div>
+          </div>
+          <!-- Image 2 -->
+          <div class="mb-4">
+            <label for="url2" class="block text-black">Nombre de la segunda foto:</label>
+            <input type="text" id="url2" name="url2" formControlName="url2"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center  text-red-700">
+            <!-- Error requerido -->
+            <span *ngIf="creationForm.get('url2')?.hasError('required') && creationForm.get('url2')?.touched"
+              class="text-red-500">Campo
+              obligatorio</span>
+          </div>
+          <!-- Upload image 2 -->
+          <div class="mb-4">
+            <label for="url2" class="block text-black">Imagen 2 del producto:</label>
+            <div class="items-center justify-center">
+              <input type="file" id="url2" name="url2" (change)="handleImageUpload2($event)"
+                class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700"
+                formControlName="url2">
+            </div>
+          </div>
+          <!-- Image 3 -->
+          <div class="mb-4">
+            <label for="url3" class="block text-black">Nombre de la tercera foto:</label>
+            <input type="text" id="url3" name="url3" formControlName="url3"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+            <!-- Error requerido -->
+            <span *ngIf="creationForm.get('url3')?.hasError('required') && creationForm.get('url3')?.touched"
+              class="text-red-500">Campo
+              obligatorio</span>
+          </div>
+          <!-- Upload image 3 -->
+          <div class="mb-4">
+            <label for="url3" class="block text-black">Imagen 3 del producto:</label>
+            <div class="items-center justify-center">
+              <input type="file" id="url3" name="url3" (change)="handleImageUpload3($event)"
+                class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700"
+                formControlName="url3">
+            </div>
+          </div>
+          <!-- Stock -->
+          <div class="mb-4">
+            <label for="stock" class="block text-black">Cantidad en Stock:</label>
+            <input type="number" id="stock" name="stock" formControlName="stock"
+              class="border-gray-300 border w-full rounded-lg px-4 py-2 text-center text-red-700">
+            <!-- Error requerido -->
+            <span
+              *ngIf="creationForm.get('description')?.hasError('required') && creationForm.get('description')?.touched"
+              class="text-red-500">Campo
+              obligatorio</span>
+          </div>
+          <!-- Botones de acción -->
+          <div class="flex justify-center">
+            <button type="button" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg mr-2"
+              (click)="closeCreateModal()">Cancelar</button>
+            <!-- <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg" [disabled]="creationForm.invalid">Guardar Producto</button> -->
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Guardar Producto</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- End creation form -->
+
+    <!-- Modal para confirmar eliminación de producto -->
+    <div *ngIf="deleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50">
+      <div class="bg-white rounded-lg p-6 max-w-md mx-auto">
+        <h2 *ngIf="selectedProduct !== null" class="text-xl font-semibold mb-4">Eliminar <b class="text-red-600">
+            {{selectedProduct.name}}</b></h2>
+        <p *ngIf="selectedProduct !== null">¿Estás seguro de que quieres eliminar el producto con ID <span
+            class="text-red-600">
+            {{selectedProduct.id}}</span>?</p>
+        <p *ngIf="selectedProduct === null">Por favor, selecciona un producto para eliminar.</p>
+        <div class="flex justify-end mt-4">
+          <button type="button" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg mr-2"
+            (click)="cancelDelete()">Cancelar</button>
+          <button type="button" class="bg-red-500 text-white px-4 py-2 rounded-lg"
+            (click)="confirmDelete()">Eliminar</button>
+        </div>
+      </div>
+    </div>
+    <!-- Iterar sobre los productos utilizando *ngFor -->
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 text-center md:grid-cols-4 lg:grid-cols-4 px-5 sm:px-10 md:px-20 py-14 gap-4">
+      <!-- Pantalla de carga mientras se obtienen los productos del merch -->
+      <div class="fixed inset-0 flex items-center justify-center shadow-xl" *ngIf="loading; else merchContainer">
+        <div class="absolute h-12 w-12 rounded-full border-t-4 border-b-4 border-gray-200"></div>
+        <div class="absolute h-12 w-12 rounded-full border-t-4 border-b-4 border-red-500 animate-spin"></div>
+        <img src="../../../assets/img/my_logo.webp" class="rounded-full h-8 w-8">
+      </div>
+      <ng-template #merchContainer>
+        <div *ngFor="let producto of productosFiltrados()"
+          class="justify-center hover:transform hover:scale-105 cursor-pointer" (click)="verDetallesProducto(producto)">
+          <div class="relative hover:border-4 hover:border-solid hover:border-red-600 ">
+            <p *ngIf="producto.stock <= 0"
+              class="absolute inset-0 flex items-center justify-center text-red-600 bg-black bg-opacity-25  text-3xl font-bold">
+              Fuera de stock</p>
+            <img [src]="'../../../assets/img/imgs_productos/' + producto.url_img1 + '.webp'"
+              class="w-50 h-auto mx-auto">
+          </div>
+          <p>{{producto.name}}</p>
+          <p class="text-red-600 text-2xl">€{{producto.price}}</p>
+        </div>
+      </ng-template>
+    </div>
+    <app-cart></app-cart>
+  </div>
+</div>

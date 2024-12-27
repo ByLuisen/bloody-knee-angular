@@ -1,0 +1,66 @@
+/* Estilos para encabezados de nivel 1 */
+h1 {
+  font-size: 60px;
+  /* Tamaño de fuente */
+  color: black;
+  /* Color de texto */
+}
+
+/* Estilos para encabezados de nivel 2 */
+h2 {
+  font-size: 30px;
+  /* Tamaño de fuente */
+  color: black;
+  /* Color de texto */
+}
+
+/* Estilos para el icono premium */
+.premium-icon {
+  position: absolute;
+  /* Posición absoluta */
+  top: 15px;
+  /* Espacio superior */
+  right: 10px;
+  /* Espacio derecho */
+  z-index: 1;
+  /* Índice z para superposición */
+  transition: transform 0.3s;
+  /* Transición para efecto de escala */
+}
+
+/* Estilos para el icono de estrella */
+.star-icon {
+  width: 35px;
+  /* Ancho */
+  height: auto;
+  /* Altura automática para mantener la proporción */
+}
+
+/* Efecto de escala para el icono premium al pasar el mouse sobre el contenedor de video */
+.video-container:hover .premium-icon {
+  transform: scale(1.5);
+  /* Escala aumentada */
+}
+
+/* Mantener el efecto hover cuando el botón está activo */
+button.active {
+  background-color: #cbd5e0;
+  /* Color de fondo */
+  color: #1a202c;
+  /* Color de texto */
+}
+
+@media (max-width: 600px) {
+  .premium-icon {
+    position: absolute;
+    top: 30px;
+    right: 70px;
+    z-index: 1;
+    transition: transform 0.3s;
+  }
+
+    .star-icon {
+      width: 35px;
+      height: auto;
+    }
+}

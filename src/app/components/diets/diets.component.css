@@ -1,0 +1,60 @@
+h1 {
+  font-size: 60px;
+  color: black;
+}
+
+.IMC {
+  @apply bg-white rounded-lg sm:w-full md:w-4/5 lg:w-3/5 xl:w-2/5 mr-2 ml-2 sm:mx-auto p-4 sm:p-8;
+}
+
+.TIPES {
+  background: rgb(201, 0, 0);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  @apply text-white rounded-lg sm:w-full md:w-4/5 lg:w-3/5 xl:w-2/5 mr-2 ml-2 sm:mx-auto p-4 sm:p-8;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.flash {
+  animation: flash 1s infinite;
+}
+.chatbot-toggle-button {
+  position: fixed;
+  bottom: 0.6rem;
+  right: 0.75rem;
+  background-color: rgb(255, 0, 0);
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10; /* Asegura que el botón esté por encima del resto del contenido */
+}
+
+.chatbot-toggle-button img {
+  width: 30px;
+  height: 30px;
+}
+
+/* Ajusta el estilo del componente app-chatbot si es necesario */
+app-chatbot {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 30px; /* Ajusta el margen superior según tus necesidades */
+  z-index: 999; /* Asegura que el chatbot esté por debajo del botón */
+  margin-right: 20px;
+}

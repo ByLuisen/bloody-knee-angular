@@ -1,0 +1,77 @@
+<div class="overflow-auto fondo_bk aclonica-font">
+  <div class="flex mt-5 justify-center" style="align-items: center">
+    <h1 class="mt-5 bk_title">
+      BLOODY<span style="color: red">KNEE</span>
+    </h1>
+    <img src="favicon.ico" alt="favicon" width="50px" height="140px" />
+  </div>
+
+  <!-- Qui som -->
+  <div class="square-container">
+    <div class="gray-square">
+      <img class="thay_fighter" src="../../../assets/img/muay-thai-battle-dl4ksyqdx4s88el9-Photoroom.png-Photoroom.webp"
+        alt="" />
+    </div>
+    <div class="red-square">
+      <p class="title_quisom sm:mt-10">Quienes somos?</p>
+      <p class="p_quisom">
+        ¡Bienvenido a Bloody Knee! Somos una empresa especializada en proporcionar entrenamientos personalizados de Muay
+        Thai,
+        boxeo y fitness a través de videos, permitiéndote llevar tu régimen de entrenamiento al siguiente nivel desde la
+        comodidad
+        de tu hogar.
+      </p>
+    </div>
+  </div>
+
+  <!-- Videos destacados -->
+  <div class="flex mt-14 justify-center mb-14" style="margin-top: 120px;">
+    <div class="background-title">
+      <p class="text-white subtitle_bk">VIDEOS DESTACADOS</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-12 sm:px-96 text-center sm:text-justify" *ngIf="role">
+    <div class="group relative" *ngFor="let video of videosAleatorios">
+      <ng-container>
+        <a (click)="selectVideo(video)">
+          <div class="premium-icon" *ngIf="video.exclusive">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #FFC300;"
+              class="star-icon">
+              <path
+                d="M21.947 9.179a1.001 1.001 0 0 0-.868-.676l-5.701-.453-2.467-5.461a.998.998 0 0 0-1.822-.001L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.213 4.107-1.49 6.452a1 1 0 0 0 1.53 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082c.297-.268.406-.686.278-1.065z">
+              </path>
+            </svg>
+          </div>
+          <div class="flex items-center justify-center sm:justify-start">
+            <img class="w-full" [src]="'../../../assets/img/' + video.modality_id + '.webp'"
+              class="max-w-full sm:max-w-none transition duration-300 transform group-hover:scale-105">
+          </div>
+        </a>
+      </ng-container>
+    </div>
+  </div>
+  <section id="subscriptions"></section>
+  <app-pricing></app-pricing>
+  <!-- Modal que alerta cuando un usuario no tiene suficientes permisos para acceder al video si es premium -->
+  <div [ngClass]="{'fixed inset-0 flex items-center justify-center z-50': modalOpen, 'hidden': !modalOpen}">
+
+    <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
+
+    <div class="bg-red-100 p-8 rounded-lg z-50">
+
+      <h2 class="text-2xl font-bold font-sans mb-4">¡Ups!
+        Contenido Premium</h2>
+
+      <p class="font-sans">Este video es contenido
+        premium. Para acceder, actualiza tu suscripción a standard o premium.</p>
+
+      <button class="mt-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mx-1"
+        (click)="closeModal()">Cerrar</button>
+
+      <button class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mx-1"
+        routerLink="/pricing">Subscribirse</button>
+
+    </div>
+  </div>
+</div>

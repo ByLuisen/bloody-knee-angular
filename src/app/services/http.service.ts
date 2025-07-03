@@ -22,12 +22,12 @@ import { environment } from 'src/environments/environment.development';
 })
 export class HttpService {
   private jwtHelper: JwtHelperService = new JwtHelperService(); // Servicio para manejar JWT
-  url: string = environment.bloodyKneeLocal;
+  url: string = environment.bloodyKneeApiUrl;
 
   constructor(
     private _http: HttpClient,
     private auth: AuthService,
-    private cookie: CookieService
+    private cookie: CookieService,
   ) {}
 
   initUser(): void {
@@ -61,13 +61,13 @@ export class HttpService {
               console.error('Error al obtener el rol:', error);
               // En caso de error, devolver un rol básico
               return of('Basic');
-            })
+            }),
           );
         } else {
           // Si el usuario no está autenticado, devolver un rol básico
           return of('Basic');
         }
-      })
+      }),
     );
   }
 
@@ -85,7 +85,7 @@ export class HttpService {
 
         // Realiza la solicitud PUT al servidor con el cuerpo construido
         return this._http.put(url, body);
-      })
+      }),
     );
   }
 
@@ -122,7 +122,7 @@ export class HttpService {
         };
         // Realiza la solicitud PUT al servidor con el cuerpo construido
         return this._http.post(url, body).pipe(map((response) => response));
-      })
+      }),
     );
   }
 
@@ -142,12 +142,12 @@ export class HttpService {
                 return this._http.post(url, body);
               }
               return of(null); // No hay usuario autenticado o no hay sub
-            })
+            }),
           );
         } else {
           return of(null); // No está autenticado
         }
-      })
+      }),
     );
   }
 
@@ -168,7 +168,7 @@ export class HttpService {
           // Si el usuario no está autenticado o no tiene sub, devuelve un Observable vacío
           return of([]);
         }
-      })
+      }),
     );
   }
 
@@ -183,7 +183,7 @@ export class HttpService {
         };
         // Realiza la solicitud PUT al servidor con el cuerpo construido
         return this._http.post(url, body).pipe(map((response) => response));
-      })
+      }),
     );
   }
 
@@ -223,9 +223,9 @@ export class HttpService {
    */
   getVideosModality(modality_id: number, type_id: number): Observable<Video[]> {
     return this._http
-      .get<{ data: Video[] }>(
-        `${this.url}/modalityvideo/${modality_id}/${type_id}`
-      )
+      .get<{
+        data: Video[];
+      }>(`${this.url}/modalityvideo/${modality_id}/${type_id}`)
       .pipe(map((response) => response.data));
   }
 
@@ -239,16 +239,15 @@ export class HttpService {
             observer.complete();
             // Actualizar las visitas del video
             this.updateVideoVisits(id).subscribe(
-              () => {
-              },
+              () => {},
               (error) => {
                 console.error('Error al actualizar las visitas', error);
-              }
+              },
             );
           },
           (error) => {
             observer.error(error);
-          }
+          },
         );
     });
   }
@@ -276,7 +275,7 @@ export class HttpService {
           },
           (error) => {
             observer.error(error);
-          }
+          },
         );
     });
   }
@@ -287,7 +286,7 @@ export class HttpService {
       catchError((error) => {
         console.error('Error al contar y actualizar comentarios:', error);
         return of(null);
-      })
+      }),
     );
   }
 
@@ -308,7 +307,7 @@ export class HttpService {
 
         // Realiza la solicitud PUT al servidor con el cuerpo construido
         return this._http.put(url, body);
-      })
+      }),
     );
   }
 
@@ -329,7 +328,7 @@ export class HttpService {
 
         // Realiza la solicitud PUT al servidor con el cuerpo construido
         return this._http.put(url, body);
-      })
+      }),
     );
   }
 
@@ -346,7 +345,7 @@ export class HttpService {
         const body = { email: user ? user.email : '' };
         // Realiza una solicitud PUT al servidor con el cuerpo que incluye el usuario
         return this._http.put(url, body);
-      })
+      }),
     );
   }
 
@@ -448,9 +447,9 @@ export class HttpService {
       .pipe(map((response) => response.data as Brand[]));
   }
   /**
-    * Retrieves all categories.
-    * @returns An observable that emits an array of quotes after the request is completed.
-    */
+   * Retrieves all categories.
+   * @returns An observable that emits an array of quotes after the request is completed.
+   */
   getCategories(): Observable<Category[]> {
     return this._http
       .get<any>(`${this.url}/categories`)
@@ -485,9 +484,9 @@ export class HttpService {
             // Manejar errores aquí
             console.error('Error en la solicitud HTTP:', error);
             return of(null); // Emite un valor nulo si hay un error
-          })
+          }),
         );
-      })
+      }),
     );
   }
 
@@ -510,9 +509,9 @@ export class HttpService {
             // Manejar errores aquí
             console.error('Error en la solicitud HTTP:', error);
             return of(null); // Emite un valor nulo si hay un error
-          })
+          }),
         );
-      })
+      }),
     );
   }
 
@@ -532,9 +531,9 @@ export class HttpService {
             // Manejar errores aquí
             console.error('Error en la solicitud HTTP:', error);
             return of(null); // Emite un valor nulo si hay un error
-          })
+          }),
         );
-      })
+      }),
     );
   }
 
@@ -554,9 +553,9 @@ export class HttpService {
             // Manejar errores aquí
             console.error('Error en la solicitud HTTP:', error);
             return of(null); // Emite un valor nulo si hay un error
-          })
+          }),
         );
-      })
+      }),
     );
   }
 
@@ -576,9 +575,9 @@ export class HttpService {
             // Manejar errores aquí
             console.error('Error en la solicitud HTTP:', error);
             return of(null); // Emite un valor nulo si hay un error
-          })
+          }),
         );
-      })
+      }),
     );
   }
 
@@ -622,7 +621,7 @@ export class HttpService {
       catchError((error) => {
         console.error('Error en la solicitud HTTP:', error);
         return of(null);
-      })
+      }),
     );
   }
 
@@ -639,7 +638,7 @@ export class HttpService {
         return this._http
           .post<{ data: Order }>(url, body)
           .pipe(map((response) => response.data));
-      })
+      }),
     );
   }
 
@@ -649,7 +648,7 @@ export class HttpService {
       catchError((error) => {
         console.error('Error en la solicitud HTTP:', error);
         return of(null);
-      })
+      }),
     );
   }
 
@@ -664,7 +663,7 @@ export class HttpService {
         return this._http
           .post<{ data: Order[] }>(url, body)
           .pipe(map((response) => response.data));
-      })
+      }),
     );
   }
 
@@ -677,7 +676,7 @@ export class HttpService {
       catchError((error) => {
         console.error('Error al cancelar el pedido:', error);
         return of(null);
-      })
+      }),
     );
   }
 
@@ -693,7 +692,7 @@ export class HttpService {
 
         // Make the POST request
         return this._http.post<Response>(url, body);
-      })
+      }),
     );
   }
 
@@ -718,7 +717,7 @@ export class HttpService {
       catchError((error) => {
         console.error('Error al obtener los vídeos favoritos:', error);
         return throwError('Error al obtener los vídeos favoritos');
-      })
+      }),
     );
   }
 }

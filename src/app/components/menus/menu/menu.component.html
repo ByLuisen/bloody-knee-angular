@@ -1,64 +1,117 @@
-<div class="sm:fixed sm:h-screen sm:w-8 lg:w-16 sm:p-3 text-center aclonica-font text-xs text-white hidden lg:block sm:z-20">
+<div
+  class="sm:fixed sm:min-h-screen sm:w-8 lg:w-16 sm:p-3 text-center aclonica-font text-xs text-white hidden lg:block sm:z-20"
+>
   <div>
     <div class="sidebar-section my-5 hover:opacity-40 cursor-pointer">
       <a routerLink="/home">
-        <img src="../../../assets/img/logo.webp" alt="logo">
+        <img src="../../../assets/img/logo.webp" alt="logo" />
       </a>
     </div>
     <div class="sidebar-section my-5 hover:opacity-40 cursor-pointer">
       <a routerLink="/thaivideos">
-        <img src="../../../assets/img/icons8_boxer_512.webp" alt="Muay Thai Image" class="sidebar-img">
+        <img
+          src="../../../assets/img/icons8_boxer_512.webp"
+          alt="Muay Thai Image"
+          class="sidebar-img"
+        />
         <p class="hidden lg:block">Thai</p>
       </a>
     </div>
     <div class="sidebar-section my-5 hover:opacity-40 cursor-pointer">
       <a routerLink="/boxingvideos">
-        <img src="../../../assets/img/boxeo1.webp" alt="Boxing Image" class="sidebar-img">
+        <img
+          src="../../../assets/img/boxeo1.webp"
+          alt="Boxing Image"
+          class="sidebar-img"
+        />
         <p class="hidden lg:block">Boxeo</p>
       </a>
     </div>
     <div class="sidebar-section my-5 hover:opacity-40 cursor-pointer">
       <a routerLink="/fitnessvideos">
-        <img src="../../../assets/img/icons8_fitness_501.webp" alt="Fitness Image" class="sidebar-img">
+        <img
+          src="../../../assets/img/icons8_fitness_501.webp"
+          alt="Fitness Image"
+          class="sidebar-img"
+        />
         <p class="hidden lg:block">Fitness</p>
       </a>
     </div>
     <div class="sidebar-section my-5 hover:opacity-40 cursor-pointer">
       <a routerLink="/diets">
-        <img src="../../../assets/img/dietas1.webp" alt="Diets Image" class="sidebar-img">
+        <img
+          src="../../../assets/img/dietas1.webp"
+          alt="Diets Image"
+          class="sidebar-img"
+        />
         <p class="hidden lg:block">Dietas</p>
       </a>
     </div>
     <div class="sidebar-section my-5 hover:opacity-40 cursor-pointer">
       <a routerLink="/merchandising">
-        <img src="../../../assets/img/eccommerce1.webp" alt="Shop Image" class="sidebar-img">
+        <img
+          src="../../../assets/img/eccommerce1.webp"
+          alt="Shop Image"
+          class="sidebar-img"
+        />
         <p class="hidden lg:block">Tienda</p>
       </a>
     </div>
     <!-- Pantalla de carga -->
     <!-- Pantalla de carga mientras se obtiene los videos de fitness -->
-    <div class="mt-10 inset-0 flex items-center justify-center shadow-xl" *ngIf="loading; else userContainer">
-      <div class="absolute h-12 w-12 rounded-full border-t-4 border-b-4 border-gray-200"></div>
-      <div class="absolute h-12 w-12 rounded-full border-t-4 border-b-4 border-red-500 animate-spin"></div>
-      <img src="../../../assets/img/my_logo.webp" class="absolute rounded-full h-8 w-8">
+    <div
+      class="mt-10 inset-0 flex items-center justify-center shadow-xl"
+      *ngIf="loading; else userContainer"
+    >
+      <div
+        class="absolute h-12 w-12 rounded-full border-t-4 border-b-4 border-gray-200"
+      ></div>
+      <div
+        class="absolute h-12 w-12 rounded-full border-t-4 border-b-4 border-red-500 animate-spin"
+      ></div>
+      <img
+        src="../../../assets/img/my_logo.webp"
+        class="absolute rounded-full h-8 w-8"
+      />
     </div>
     <ng-template #userContainer>
-      <div class="sidebar-section my-5 hover:opacity-40 cursor-pointer" *ngIf="auth.user$ | async as user">
+      <div
+        class="sidebar-section my-5 hover:opacity-40 cursor-pointer"
+        *ngIf="auth.user$ | async as user"
+      >
         <a routerLink="/profile">
-          <img class="rounded-full size-8 mx-auto" [src]="user.picture" alt="Profile Image">
+          <img
+            class="rounded-full size-8 mx-auto"
+            [src]="user.picture"
+            alt="Profile Image"
+          />
           <p class="hidden lg:block text-center">Perfil</p>
         </a>
       </div>
       <div class="sidebar-section my-5 hover:opacity-40 cursor-pointer">
-        <a (click)="auth.logout({ logoutParams: { returnTo: document.location.origin } })">
+        <a
+          (click)="
+            auth.logout({
+              logoutParams: { returnTo: document.location.origin },
+            })
+          "
+        >
           <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
-            <img src="../../../assets/img/logout.webp" alt="Logout Image" class="sidebar-img">
+            <img
+              src="../../../assets/img/logout.webp"
+              alt="Logout Image"
+              class="sidebar-img"
+            />
             <p class="hidden lg:block text-center">Logout</p>
           </ng-container>
         </a>
         <ng-template #loggedOut>
           <a (click)="auth.loginWithRedirect()">
-            <img src="../../../assets/img/login1.webp" alt="Profile Image" class="sidebar-img">
+            <img
+              src="../../../assets/img/login1.webp"
+              alt="Profile Image"
+              class="sidebar-img"
+            />
             <p class="hidden lg:block">Login</p>
           </a>
         </ng-template>

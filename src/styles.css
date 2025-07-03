@@ -4,25 +4,29 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 .fondo_bk {
   background: linear-gradient(180deg, #ffffff 0%, #c7c7c7 39%, #ffdddd 100%);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
   overflow-x: hidden;
 }
-
 
 .aclonica-font {
   font-family: "Aclonica", sans-serif;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100dvh;
+  margin: 0;
+}
+
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 /* Estilo del scrollbar */
 ::-webkit-scrollbar {
@@ -37,5 +41,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Estilo del thumb en hover */
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(201, 0, 0, 0.574); /* Color del thumb al pasar el mouse */
+  background-color: rgba(
+    201,
+    0,
+    0,
+    0.574
+  ); /* Color del thumb al pasar el mouse */
 }

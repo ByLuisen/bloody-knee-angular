@@ -28,7 +28,7 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { LoadingScreenComponent } from './components/loading-screen/loading-screen.component';
@@ -67,7 +67,6 @@ import { CookiePopupComponent } from './components/cookie-popup/cookie-popup.com
     OutStockModalComponent,
     MerchandisingBannerComponent,
     CookiePopupComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -84,7 +83,7 @@ import { CookiePopupComponent } from './components/cookie-popup/cookie-popup.com
       clientId: environment.SPAClientID,
       authorizationParams: {
         redirect_uri: window.location.origin,
-        prompt: 'select_account'
+        prompt: 'select_account',
       },
       cacheLocation: 'localstorage',
     }),
@@ -92,7 +91,7 @@ import { CookiePopupComponent } from './components/cookie-popup/cookie-popup.com
     provideHttpClient(withInterceptors([authHttpInterceptorFn])),
 
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    CookieService
+    CookieService,
   ],
   bootstrap: [AppComponent],
 })

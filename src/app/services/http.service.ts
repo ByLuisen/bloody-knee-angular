@@ -15,7 +15,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Order } from '../models/Order';
 import { Brand } from '../models/Brand';
 import { Category } from '../models/Category';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',

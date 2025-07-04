@@ -4,8 +4,8 @@
 }
 
 .background_profile {
- @apply h-14;
- width: 300px;
+  height: 100dvh;
+  width: 300px;
 }
 
 .content_profile_firstInfo {
@@ -69,8 +69,8 @@ h1 {
   /* overflow: auto; */
 }
 
-.perfil{
-border-radius: 15px;
+.perfil {
+  border-radius: 15px;
 }
 
 img {

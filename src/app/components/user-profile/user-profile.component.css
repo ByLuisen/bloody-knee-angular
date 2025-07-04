@@ -4,7 +4,7 @@
 }
 
 .background_profile {
-  height: 100dvh;
+  @apply h-14;
   width: 300px;
 }
 

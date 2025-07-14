@@ -17,7 +17,10 @@ export class ShippingAddressPageComponent implements OnInit {
   loading: boolean = false;
   updated: boolean = false;
   products: Product[] = []; // Array to hold cart products
-  constructor(private router: Router, private http: HttpService) {}
+  constructor(
+    private router: Router,
+    private http: HttpService,
+  ) {}
 
   ngOnInit(): void {
     this.getProductsFromBBDD();
@@ -83,7 +86,7 @@ export class ShippingAddressPageComponent implements OnInit {
             console.error('Error al obtener los productos:', error);
             reject(error); // Reject the promise if there's an error
             return of([]);
-          })
+          }),
         )
         .subscribe();
     });
@@ -98,7 +101,7 @@ export class ShippingAddressPageComponent implements OnInit {
     // Usamos el método reduce para sumar todas las cantidades de los productos en el carrito
     total = this.products.reduce(
       (total, product) => total + product.quantity,
-      0
+      0,
     );
     return total;
   }
@@ -121,7 +124,7 @@ export class ShippingAddressPageComponent implements OnInit {
     if (this.shippingAddress.valid) {
       // Obtener todos los datos del formulario
       const shippingData = Object.values(this.shippingAddress.value).map(
-        (value: any) => value.trim()
+        (value: any) => value.trim(),
       );
       const shippingAddress = new User();
       shippingAddress.country = shippingData[0];
@@ -141,11 +144,11 @@ export class ShippingAddressPageComponent implements OnInit {
           .pipe(
             switchMap((response) => {
               if (response) {
+                this.loading = false;
                 window.location.href = response.data.checkout_url;
               }
               return of();
             }),
-            finalize(() => (this.loading = false))
           )
           .subscribe();
       }

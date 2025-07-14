@@ -43,7 +43,7 @@ export class ProductDetailComponent implements OnInit {
     private router: Router,
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.productId = +params['productId'];
       this.loadingProduct = true;
@@ -348,7 +348,6 @@ export class ProductDetailComponent implements OnInit {
                 window.location.href = response.data.checkout_url;
               }
             }),
-            finalize(() => (this.loading = false)),
           )
           .subscribe(
             () => {},

@@ -337,7 +337,7 @@ export class ProductDetailComponent implements OnInit {
       } else if (quantity > this.product.stock) {
         this.outStockAlert = true;
       } else {
-        // this.loading = true;
+        this.loading = true;
         this.product.quantity = this.getQuantity();
         this.http
           .checkout([this.product])
@@ -347,7 +347,7 @@ export class ProductDetailComponent implements OnInit {
                 window.location.href = response.data.checkout_url;
               }
             }),
-            // finalize(() => (this.loading = false)),
+            finalize(() => (this.loading = false)),
           )
           .subscribe(
             () => {},

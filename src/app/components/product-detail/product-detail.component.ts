@@ -344,6 +344,7 @@ export class ProductDetailComponent implements OnInit {
           .pipe(
             tap((response) => {
               if (response) {
+                this.loading = false;
                 window.location.href = response.data.checkout_url;
               }
             }),

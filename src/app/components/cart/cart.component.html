@@ -1,54 +1,93 @@
-<div id="button-cart" (click)="openCart()" class="absolute bottom-2 right-3 cursor-pointer">
-  <img src="../../../assets/img/compras3.webp"
-    class="rounded-full sm:w-16 sm:h-16 w-14 h-14 transition-transform duration-300 transform bg-red-600 hover:scale-110 hover:bg-red-500">
+<div
+  id="button-cart"
+  (click)="openCart()"
+  class="absolute bottom-3 right-3 cursor-pointer"
+>
+  <img
+    src="../../../assets/img/compras3.webp"
+    class="rounded-full sm:w-16 sm:h-16 w-[50px] h-[50px] transition-transform duration-300 transform bg-red-600 hover:scale-110 hover:bg-red-500"
+  />
 </div>
 
 <!-- Shopping cart panel -->
-<div class="relative z-50" aria-labelledby="slide-over-title" role="dialog" aria-modal="true" *ngIf="cartOpen"
-  [ngClass]="{ 'fade-in': cartOpen}">
-
+<div
+  class="relative z-50"
+  aria-labelledby="slide-over-title"
+  role="dialog"
+  aria-modal="true"
+  *ngIf="cartOpen"
+  [ngClass]="{ 'fade-in': cartOpen }"
+>
   <!-- Darkened background behind the panel -->
   <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
   <!-- Main container for the panel -->
   <div class="fixed inset-0 overflow-hidden">
     <div class="absolute inset-0 overflow-hidden">
-
       <!-- Container for panel scroll -->
-      <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10"
-        [ngClass]="{ 'slide-over': cartOpen}">
+      <div
+        class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10"
+        [ngClass]="{ 'slide-over': cartOpen }"
+      >
         <div id="expandableCart" class="pointer-events-auto w-screen max-w-md">
-
           <!-- Loading screen while fetching cart products -->
-          <div class="h-full w-full flex items-center justify-center bg-white shadow-xl"
-            *ngIf="loading; else cartContainer">
-
+          <div
+            class="h-full w-full flex items-center justify-center bg-white shadow-xl"
+            *ngIf="loading; else cartContainer"
+          >
             <!-- Loading animation -->
-            <div class="absolute h-12 w-12 rounded-full border-t-4 border-b-4 border-gray-200"></div>
-            <div class="absolute h-12 w-12 rounded-full border-t-4 border-b-4 border-red-500 animate-spin"></div>
+            <div
+              class="absolute h-12 w-12 rounded-full border-t-4 border-b-4 border-gray-200"
+            ></div>
+            <div
+              class="absolute h-12 w-12 rounded-full border-t-4 border-b-4 border-red-500 animate-spin"
+            ></div>
 
             <!-- Logo -->
-            <img src="../../../assets/img/my_logo.webp" class="rounded-full h-8 w-8">
+            <img
+              src="../../../assets/img/my_logo.webp"
+              class="rounded-full h-8 w-8"
+            />
           </div>
 
           <!-- Cart content -->
           <ng-template #cartContainer>
-            <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+            <div
+              class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl"
+            >
               <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                 <!-- Cart header -->
                 <div class="flex items-start justify-between">
-                  <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Cesta</h2>
+                  <h2
+                    class="text-lg font-medium text-gray-900"
+                    id="slide-over-title"
+                  >
+                    Cesta
+                  </h2>
                   <div class="ml-3 flex h-7 items-center">
                     <!-- Button to close the panel -->
-                    <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
-                      (click)="closeCart()">
+                    <button
+                      type="button"
+                      class="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
+                      (click)="closeCart()"
+                    >
                       <span class="absolute -inset-0.5"></span>
                       <span class="sr-only">Close panel</span>
 
                       <!-- Close icon -->
-                      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                        aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      <svg
+                        class="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
                       </svg>
                     </button>
                   </div>
@@ -59,32 +98,63 @@
                   <div class="flow-root">
                     <ul role="list" class="-my-6 divide-y divide-gray-200">
                       <!-- List item for each product in the cart -->
-                      <li class="flex py-6" *ngFor="let product of products; let i = index">
+                      <li
+                        class="flex py-6"
+                        *ngFor="let product of products; let i = index"
+                      >
                         <!-- Product image -->
                         <div
                           class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 cursor-pointer"
-                          (click)="verDetallesProducto(product.id)">
-                          <img [src]="'../../../assets/img/imgs_productos/' + product.url_img1 + '.webp'">
+                          (click)="verDetallesProducto(product.id)"
+                        >
+                          <img
+                            [src]="
+                              '../../../assets/img/imgs_productos/' +
+                              product.url_img1 +
+                              '.webp'
+                            "
+                          />
                         </div>
 
                         <!-- Product details -->
                         <div class="ml-4 flex flex-1 flex-col">
                           <div>
                             <!-- Product name and price -->
-                            <div class="flex justify-between text-base font-medium text-gray-900">
-                              <h3 class="cursor-pointer" (click)="verDetallesProducto(product.id)">
+                            <div
+                              class="flex justify-between text-base font-medium text-gray-900"
+                            >
+                              <h3
+                                class="cursor-pointer"
+                                (click)="verDetallesProducto(product.id)"
+                              >
                                 {{ product.name }}
                               </h3>
                               <p class="ml-4">{{ product.price }}€</p>
                             </div>
-                            <p class="mt-1 text-sm text-gray-500">{{product.brand}}</p>
+                            <p class="mt-1 text-sm text-gray-500">
+                              {{ product.brand }}
+                            </p>
                           </div>
-                          <div class="flex flex-1 items-end justify-between text-sm">
+                          <div
+                            class="flex flex-1 items-end justify-between text-sm"
+                          >
                             <!-- Product quantity and button to delete it -->
-                            <p class="text-gray-500">Cantidad {{ product.quantity }}</p>
-                            <div class="flex" *ngIf="document.location.pathname != '/address-form'">
-                              <button type="button" (click)="deleteProduct(product.id)"
-                                class="font-medium text-red-600 hover:text-red-500">Eliminar</button>
+                            <p class="text-gray-500">
+                              Cantidad {{ product.quantity }}
+                            </p>
+                            <div
+                              class="flex"
+                              *ngIf="
+                                document.location.pathname != '/address-form'
+                              "
+                            >
+                              <button
+                                type="button"
+                                (click)="deleteProduct(product.id)"
+                                class="font-medium text-red-600 hover:text-red-500"
+                              >
+                                Eliminar
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -100,10 +170,19 @@
                   <p>Tu cesta está vacía.</p>
                   <!-- Empty cart icon -->
                   <div class="flex justify-center items-center mt-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                      stroke="red" class="h-8 w-8">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="2"
+                      stroke="red"
+                      class="h-8 w-8"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -111,23 +190,42 @@
 
               <!-- Subtotal and action buttons -->
               <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
-                <div class="flex justify-between text-base font-medium text-gray-900" *ngIf="products.length != 0">
+                <div
+                  class="flex justify-between text-base font-medium text-gray-900"
+                  *ngIf="products.length != 0"
+                >
                   <p>Subtotal ({{ calculateTotalProducts() }} producto/s):</p>
                   <p>{{ calculateTotalAmount() }}€</p>
                 </div>
                 <!-- Button to proceed to checkout -->
-                <div class="mt-6" *ngIf="products.length != 0 && document.location.pathname != '/address-form'">
-                  <a (click)="loginOrAdressForm()"
-                    class="flex items-center justify-center rounded-md border border-transparent cursor-pointer bg-red-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">Tramitar
-                    pedido</a>
+                <div
+                  class="mt-6"
+                  *ngIf="
+                    products.length != 0 &&
+                    document.location.pathname != '/address-form'
+                  "
+                >
+                  <a
+                    (click)="loginOrAdressForm()"
+                    class="flex items-center justify-center rounded-md border border-transparent cursor-pointer bg-red-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700"
+                    >Tramitar pedido</a
+                  >
                 </div>
 
                 <!-- Continue shopping button -->
-                <div class="mt-6 flex justify-center text-center text-sm text-gray-500"
-                  *ngIf="document.location.pathname != '/address-form'">
+                <div
+                  class="mt-6 flex justify-center text-center text-sm text-gray-500"
+                  *ngIf="document.location.pathname != '/address-form'"
+                >
                   <p>
-                    <span class="text-black" *ngIf="products.length != 0">o </span>
-                    <button type="button" class="font-medium text-red-600 hover:text-red-500" (click)="closeCart()">
+                    <span class="text-black" *ngIf="products.length != 0"
+                      >o
+                    </span>
+                    <button
+                      type="button"
+                      class="font-medium text-red-600 hover:text-red-500"
+                      (click)="closeCart()"
+                    >
                       Continuar comprando
                       <span aria-hidden="true"> &rarr;</span>
                     </button>
@@ -143,25 +241,54 @@
 </div>
 
 <!-- Max quantity product update notification -->
-<div id="toast-warning" *ngIf="updated" [ngClass]="{ 'fade-in': updated, 'fade-out': !updated }"
+<div
+  id="toast-warning"
+  *ngIf="updated"
+  [ngClass]="{ 'fade-in': updated, 'fade-out': !updated }"
   class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-800 bg-red-100 rounded-lg shadow-lg dark:text-gray-200 dark:bg-yellow-700 border-red-600 border z-50"
-  role="alert">
+  role="alert"
+>
   <div
-    class="inline-flex items-center justify-center flex-shrink-0 w-10 h-10 text-red-500 bg-red-200 rounded-full dark:bg-red-600 dark:text-red-200">
-    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+    class="inline-flex items-center justify-center flex-shrink-0 w-10 h-10 text-red-500 bg-red-200 rounded-full dark:bg-red-600 dark:text-red-200"
+  >
+    <svg
+      class="w-6 h-6"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+    >
       <path
-        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z" />
+        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z"
+      />
     </svg>
     <span class="sr-only">Warning icon</span>
   </div>
-  <div class="ml-4 text-sm font-normal">Hemos actualizado tu cesta debido a falta de stock.</div>
-  <button type="button" (click)="updated = false"
+  <div class="ml-4 text-sm font-normal">
+    Hemos actualizado tu cesta debido a falta de stock.
+  </div>
+  <button
+    type="button"
+    (click)="updated = false"
     class="ml-auto -mx-1.5 -my-1.5 bg-red text-red-400 hover:text-red-900 rounded-full focus:ring-2 focus:ring-red-300 p-2 hover:bg-red-100 inline-flex items-center justify-center w-10 h-10 dark:text-red-500 dark:hover:text-white dark:bg-red-800 dark:hover:bg-red-700"
-    data-dismiss-target="#toast-warning" aria-label="Close">
+    data-dismiss-target="#toast-warning"
+    aria-label="Close"
+  >
     <span class="sr-only">Close</span>
-    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="m6 18 12-12M6 6l12 12" />
+    <svg
+      class="w-4 h-4"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m6 18 12-12M6 6l12 12"
+      />
     </svg>
   </button>
 </div>

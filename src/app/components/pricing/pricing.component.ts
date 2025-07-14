@@ -11,6 +11,7 @@ import { HttpService } from 'src/app/services/http.service';
   styleUrls: ['./pricing.component.css'],
 })
 export class PricingComponent implements OnInit {
+  pathname: string = window.location.pathname;
   quotes!: Quote[];
   arrayAdvantages!: any;
   loading: boolean = false;
@@ -27,7 +28,7 @@ export class PricingComponent implements OnInit {
     this.http.getQuotes().subscribe((quotes: any[]) => {
       this.quotes = quotes;
       this.arrayAdvantages = this.quotes.map((quote) =>
-        quote.advantages.split(';')
+        quote.advantages.split(';'),
       );
     });
 
@@ -36,7 +37,7 @@ export class PricingComponent implements OnInit {
         this.loading = true;
         zip(
           this.http.getCheckoutSession(params['session_id']),
-          this.http.getLineItems(params['session_id'])
+          this.http.getLineItems(params['session_id']),
         )
           .pipe(
             switchMap(([checkoutSession, lineItems]) => {
@@ -54,16 +55,17 @@ export class PricingComponent implements OnInit {
                 });
                 return of();
               }
-            }),tap((response) => {
-              if(response) {
-                this.role = response.data
-                if(this.role == 'Admin') {
+            }),
+            tap((response) => {
+              if (response) {
+                this.role = response.data;
+                if (this.role == 'Admin') {
                   this.message = response.message;
                 }
                 this.loading = false;
                 this.openModal = true;
               }
-            })
+            }),
           )
           .subscribe();
       } else {
@@ -96,14 +98,14 @@ export class PricingComponent implements OnInit {
             window.location.href = response.data.checkout_url;
           }
         }),
-        finalize(() => (this.loading = false))
+        finalize(() => (this.loading = false)),
       )
       .subscribe(
         () => {},
         (error) => {
           console.error('Error al suscribirse a la cotización:', error);
           // Manejar el error en tu aplicación
-        }
+        },
       );
   }
 

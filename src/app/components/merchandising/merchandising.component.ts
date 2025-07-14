@@ -25,9 +25,9 @@ export class MerchandisingComponent implements OnInit {
   editModal: boolean = false;
   deleteModal: boolean = false;
   createModal: boolean = false;
-  editedProduct: Product = new Product;
-  newProduct: Product = new Product;
-  infoAdmin: string = "";
+  editedProduct: Product = new Product();
+  newProduct: Product = new Product();
+  infoAdmin: string = '';
   selectedProduct: Product | null = null;
   brands: Brand[] = [];
   categories: Category[] = [];
@@ -41,7 +41,11 @@ export class MerchandisingComponent implements OnInit {
    * @param router Router for navigation.
    * @param auth AuthService for authentication.
    */
-  constructor(private http: HttpService, private router: Router, private auth: AuthService) { }
+  constructor(
+    private http: HttpService,
+    private router: Router,
+    private auth: AuthService,
+  ) {}
 
   // ViewChild to reference the price range input element.
   @ViewChild('priceRangeInput') priceRangeInput!: ElementRef;
@@ -51,42 +55,31 @@ export class MerchandisingComponent implements OnInit {
     this.creationForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^[a-zA-Z0-9\s]*$/)
+        Validators.pattern(/^[a-zA-Z0-9\s]*$/),
       ]),
-      brandId: new FormControl('', [
-        Validators.required,
-      ]),
-      categoryId: new FormControl('', [
-        Validators.required,
-      ]),
+      brandId: new FormControl('', [Validators.required]),
+      categoryId: new FormControl('', [Validators.required]),
       description: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^[a-zA-Z0-9\s]*$/)
+        Validators.pattern(/^[a-zA-Z0-9\s]*$/),
       ]),
       price: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^(?:[5-9]|[1-9][0-9]|1[0-9]{2}|200)$/)
+        Validators.pattern(/^(?:[5-9]|[1-9][0-9]|1[0-9]{2}|200)$/),
       ]),
-      url1: new FormControl('', [
-        Validators.required,
-      ]),
-      url2: new FormControl('', [
-        Validators.required,
-      ]),
-      url3: new FormControl('', [
-        Validators.required,
-      ]),
+      url1: new FormControl('', [Validators.required]),
+      url2: new FormControl('', [Validators.required]),
+      url3: new FormControl('', [Validators.required]),
       stock: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^[0-9\s]*$/)
-      ])
-    })
+        Validators.pattern(/^[0-9\s]*$/),
+      ]),
+    });
     this.http.getRole().subscribe((response) => {
-      this.role = response
+      this.role = response;
     });
     this.getProductos();
   }
-
 
   /**
    * Fetches the list of products from the server.
@@ -113,14 +106,14 @@ export class MerchandisingComponent implements OnInit {
         catchError((error) => {
           console.error('Error al obtener los productos:', error);
           return of([]);
-        })
+        }),
       )
       .subscribe();
   }
 
   /**
-    * Updates the maximum price filter when the price range input changes.
-    */
+   * Updates the maximum price filter when the price range input changes.
+   */
   onPriceChange() {
     this.precioMaximo = parseInt(this.priceRangeInput.nativeElement.value);
   }
@@ -135,10 +128,10 @@ export class MerchandisingComponent implements OnInit {
   }
 
   /**
-  * Counts the number of out-of-stock products.
-  *
-  * @returns Number of out-of-stock products.
-  */
+   * Counts the number of out-of-stock products.
+   *
+   * @returns Number of out-of-stock products.
+   */
   contarProductosFueraDeStock(): number {
     return this.productos.filter((producto) => producto.stock === 0).length;
   }
@@ -159,17 +152,17 @@ export class MerchandisingComponent implements OnInit {
         productosFiltrados = this.productos;
       } else if (this.mostrarEnStock) {
         productosFiltrados = this.productos.filter(
-          (producto) => producto.stock > 0
+          (producto) => producto.stock > 0,
         );
       } else if (this.mostrarFueraDeStock) {
         productosFiltrados = this.productos.filter(
-          (producto) => producto.stock === 0
+          (producto) => producto.stock === 0,
         );
       }
     }
     // Filtrar por rango de precio
     productosFiltrados = productosFiltrados.filter(
-      (producto) => producto.price <= this.precioMaximo
+      (producto) => producto.price <= this.precioMaximo,
     );
 
     return productosFiltrados;
@@ -189,7 +182,6 @@ export class MerchandisingComponent implements OnInit {
     }
   }
 
-
   /**
    * Toggles edit admin mode.
    */
@@ -197,10 +189,10 @@ export class MerchandisingComponent implements OnInit {
     this.deleteAdminMode = false;
     if (!this.editAdminMode) {
       this.editAdminMode = true;
-      this.infoAdmin = "SELECCIONA EL PRODUCTO A EDITAR";
+      this.infoAdmin = 'SELECCIONA EL PRODUCTO A EDITAR';
     } else {
       this.editAdminMode = false;
-      this.infoAdmin = "";
+      this.infoAdmin = '';
     }
   }
 
@@ -212,10 +204,10 @@ export class MerchandisingComponent implements OnInit {
     if (!this.deleteAdminMode) {
       this.deleteAdminMode = true;
 
-      this.infoAdmin = "SELECCIONA EL PRODUCTO A ELIMINAR";
+      this.infoAdmin = 'SELECCIONA EL PRODUCTO A ELIMINAR';
     } else {
       this.deleteAdminMode = false;
-      this.infoAdmin = "";
+      this.infoAdmin = '';
     }
   }
   /**
@@ -225,13 +217,10 @@ export class MerchandisingComponent implements OnInit {
     if (!this.createModal) {
       this.createModal = true;
       this.deleteAdminMode = false;
-
     } else {
       this.createModal = false;
     }
   }
-
-
 
   /**
    * Opens the edit modal for the selected product.
@@ -239,7 +228,9 @@ export class MerchandisingComponent implements OnInit {
    * @param productId The ID of the product to edit.
    */
   openEditModal(productId: number) {
-    const selectedProduct = this.productos.find(producto => producto.id === productId);
+    const selectedProduct = this.productos.find(
+      (producto) => producto.id === productId,
+    );
     if (selectedProduct) {
       this.editedProduct = { ...selectedProduct } as Product;
       this.editModal = true;
@@ -252,7 +243,7 @@ export class MerchandisingComponent implements OnInit {
    * @param productId The ID of the product to edit.
    */
   getBrandNameById(brandId: number): string {
-    const brand = this.brands.find(brand => brand.id === brandId);
+    const brand = this.brands.find((brand) => brand.id === brandId);
     return brand ? brand.name : ''; // Devolver el nombre de la marca si se encuentra, de lo contrario, cadena vacía
   }
 
@@ -268,14 +259,16 @@ export class MerchandisingComponent implements OnInit {
    * Submits the edit product form and updates the product.
    */
   submitEditProductForm() {
-    this.http.updateProduct(this.editedProduct.id, this.editedProduct).subscribe(
-      response => {
-        this.closeEditModal();
-      },
-      error => {
-        console.error('Error al actualizar el producto', error);
-      }
-    );
+    this.http
+      .updateProduct(this.editedProduct.id, this.editedProduct)
+      .subscribe(
+        (response) => {
+          this.closeEditModal();
+        },
+        (error) => {
+          console.error('Error al actualizar el producto', error);
+        },
+      );
   }
 
   /**
@@ -300,7 +293,7 @@ export class MerchandisingComponent implements OnInit {
       },
       (error) => {
         console.error('Error al crear el producto:', error);
-      }
+      },
     );
   }
 
@@ -328,7 +321,9 @@ export class MerchandisingComponent implements OnInit {
   confirmDelete() {
     if (this.selectedProduct !== null) {
       this.http.deleteProduct(this.selectedProduct.id).subscribe(() => {
-        this.productos = this.productos.filter(producto => producto.id !== this.selectedProduct!.id);
+        this.productos = this.productos.filter(
+          (producto) => producto.id !== this.selectedProduct!.id,
+        );
         this.selectedProduct = null;
         this.deleteModal = false;
       });
@@ -351,7 +346,7 @@ export class MerchandisingComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const fileName = input.files[0].name;
-      this.archivos.push(input.files[0])
+      this.archivos.push(input.files[0]);
       this.creationForm.patchValue({ url1: fileName });
     }
   }
@@ -365,7 +360,7 @@ export class MerchandisingComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const fileName = input.files[0].name;
-      this.archivos.push(input.files[0])
+      this.archivos.push(input.files[0]);
       this.creationForm.patchValue({ url2: fileName });
     }
   }
@@ -379,7 +374,7 @@ export class MerchandisingComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const fileName = input.files[0].name;
-      this.archivos.push(input.files[0])
+      this.archivos.push(input.files[0]);
       this.creationForm.patchValue({ url3: fileName });
     }
   }

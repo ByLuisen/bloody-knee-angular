@@ -9,6 +9,7 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class ProfileOrdersComponent implements OnInit {
   loading: boolean = false;
+  loadingScreen: boolean = false;
   orders!: Order[];
   openModal: boolean = false;
   role!: string;
@@ -17,7 +18,7 @@ export class ProfileOrdersComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.getRole().subscribe((response) => {
-      this.role = response
+      this.role = response;
     });
     this.loading = true;
     this.http.getOrders().subscribe((orders) => {
@@ -27,6 +28,7 @@ export class ProfileOrdersComponent implements OnInit {
   }
 
   cancelOrder(order: Order): void {
+    this.loadingScreen = true;
     this.http.cancelOrder(order).subscribe((response) => {
       if (response) {
         // Search the index of the order parametre
@@ -35,6 +37,7 @@ export class ProfileOrdersComponent implements OnInit {
           // Change the status order to canceled
           this.orders[orderIndex].status = 'Cancelado';
         }
+        this.loadingScreen = false;
         this.openModal = true;
       }
     });

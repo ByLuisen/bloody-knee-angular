@@ -40,7 +40,7 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     public auth: AuthService,
     private cookie: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -49,7 +49,6 @@ export class ProductDetailComponent implements OnInit {
       this.loadingProduct = true;
       this.getProducto();
     });
-    this.getRandomProducts();
     this.shippingAddress = new FormGroup({
       country: new FormControl('España', [Validators.required]),
       first_name: new FormControl('', [
@@ -87,9 +86,15 @@ export class ProductDetailComponent implements OnInit {
       const product = await this.http
         .getProductsById([this.productId])
         .toPromise();
-      this.product = product![0];
-      // Inicializar la imagen principal con la primera imagen del producto
-      this.mainImageUrl = this.product ? this.product.url_img1 : '';
+      if (product![0] == undefined) {
+        this.router.navigate(['/not-found']);
+      } else {
+        this.product = product![0];
+        // Inicializar la imagen principal con la primera imagen del producto
+        this.mainImageUrl = this.product ? this.product.url_img1 : '';
+
+        this.getRandomProducts();
+      }
     } catch (error) {
       console.error('Error al obtener el producto:', error);
     }
@@ -111,7 +116,7 @@ export class ProductDetailComponent implements OnInit {
           const randomProducts = this.getRandomItems(products, 6);
 
           this.topProducts = randomProducts.filter(
-            (product) => product.id !== this.productId
+            (product) => product.id !== this.productId,
           );
 
           return of(products);
@@ -120,7 +125,7 @@ export class ProductDetailComponent implements OnInit {
         catchError((error) => {
           console.error('Error al obtener productos:', error);
           return of([]);
-        })
+        }),
       )
       .subscribe();
   }
@@ -197,14 +202,14 @@ export class ProductDetailComponent implements OnInit {
               this.openModal = true;
             }
             return of(null);
-          })
+          }),
         )
         .subscribe(
           () => {},
           (error) => {
             console.error(error);
             // Manejar el error en tu aplicación
-          }
+          },
         );
     } else {
       this.outStockAlert = true;
@@ -230,7 +235,7 @@ export class ProductDetailComponent implements OnInit {
 
       // Verificar si el producto ya está en el carrito
       const existingProductIndex = cart.findIndex(
-        (p: any) => p.id === this.productId
+        (p: any) => p.id === this.productId,
       );
 
       if (existingProductIndex !== -1) {
@@ -298,7 +303,7 @@ export class ProductDetailComponent implements OnInit {
     if (this.product.stock > 0) {
       // Get the quantity product selector
       const selectElement = document.getElementById(
-        'quantity'
+        'quantity',
       ) as HTMLSelectElement;
       // Parse to integer the quantity
       return parseInt(selectElement.value);
@@ -309,7 +314,7 @@ export class ProductDetailComponent implements OnInit {
     if (this.shippingAddress.valid) {
       // Obtener todos los datos del formulario
       const shippingData = Object.values(this.shippingAddress.value).map(
-        (value: any) => value.trim()
+        (value: any) => value.trim(),
       );
       const shippingAddress = new User();
       shippingAddress.country = shippingData[0];
@@ -332,7 +337,7 @@ export class ProductDetailComponent implements OnInit {
       } else if (quantity > this.product.stock) {
         this.outStockAlert = true;
       } else {
-        this.loading = true;
+        // this.loading = true;
         this.product.quantity = this.getQuantity();
         this.http
           .checkout([this.product])
@@ -342,14 +347,14 @@ export class ProductDetailComponent implements OnInit {
                 window.location.href = response.data.checkout_url;
               }
             }),
-            finalize(() => (this.loading = false))
+            // finalize(() => (this.loading = false)),
           )
           .subscribe(
             () => {},
             (error) => {
               console.error('Error al iniciar la sesión de pago:', error);
               // Manejar el error en tu aplicación
-            }
+            },
           );
       }
     } else {

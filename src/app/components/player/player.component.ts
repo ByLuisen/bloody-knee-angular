@@ -9,6 +9,7 @@ import { AuthService, User } from '@auth0/auth0-angular';
 import { Comment } from 'src/app/models/Comment';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { ViewChild } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -50,7 +51,7 @@ export class PlayerComponent implements OnInit {
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    public auth: AuthService
+    public auth: AuthService,
   ) {
     this.auth.isAuthenticated$.subscribe((isauth) => {
       if (isauth) {
@@ -63,19 +64,12 @@ export class PlayerComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.loadingPlayer = true;
-    this.http.getRole().subscribe((response) => {
-      this.role = response
-    });
-    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-      'https://player.vimeo.com/video/942272495?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479'
-    );
+    this.role = await firstValueFrom(this.http.getRole());
     this.route.params.subscribe((params) => {
       this.videoId = +params['videoId'];
       this.getVideo();
-      this.getDestacados();
-      this.getCommentsByVideoId(this.videoId);
     });
   }
 
@@ -114,12 +108,10 @@ export class PlayerComponent implements OnInit {
       (comments: Comment[]) => {
         this.comments = comments;
         this.loadInitialComments();
-
       },
       (error) => {
-
         console.error('Error al obtener comentarios:', error);
-      }
+      },
     );
   }
 
@@ -137,7 +129,7 @@ export class PlayerComponent implements OnInit {
           (error) => {
             console.error('Error al agregar comentario:', error);
             // Manejar el error, mostrar un mensaje de error, o realizar otras acciones según sea necesario
-          }
+          },
         );
       } else {
         this.auth.loginWithPopup();
@@ -150,20 +142,18 @@ export class PlayerComponent implements OnInit {
     this.descriptionVisible = !this.descriptionVisible;
   }
 
-
-
   islogged() {
     this.auth.isAuthenticated$.subscribe((isAuthenticated) => {
       if (isAuthenticated) {
       } else {
         this.likeOpenModal();
       }
-    }); this.auth.user$.subscribe((user) => {
+    });
+    this.auth.user$.subscribe((user) => {
       if (user) {
         this.currentUser = user; // Almacena la información del usuario autenticado
       }
     });
-
   }
   /**
    *
@@ -194,16 +184,15 @@ export class PlayerComponent implements OnInit {
           },
           (error) => {
             console.error('Error al actualizar like', error);
-          }
+          },
         );
       } else {
         console.log(
-          'El usuario debe estar autenticado para dar me gusta al video.'
+          'El usuario debe estar autenticado para dar me gusta al video.',
         );
       }
     });
   }
-
 
   /**
    *
@@ -216,7 +205,6 @@ export class PlayerComponent implements OnInit {
           (response) => {
             if (response.message === 'Dislike registrado correctamente') {
               this.UpdateDislikeOpenModal();
-
 
               this.UpdateDislikeCloseModal2();
               this.UpdateLikeCloseModal();
@@ -236,32 +224,42 @@ export class PlayerComponent implements OnInit {
           },
           (error) => {
             console.error('Error al actualizar dislike', error);
-          }
+          },
         );
       } else {
         console.log(
-          'El usuario debe estar autenticado para dar no me gusta al video.'
+          'El usuario debe estar autenticado para dar no me gusta al video.',
         );
       }
     });
   }
 
-
-
-
   getVideo(): void {
     this.http.getVideoById(this.videoId).subscribe(
       (video) => {
         this.video = video;
-        this.cdr.detectChanges();
-        // this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.video.url);
-        this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.video.url
-        );
+        if (
+          video.exclusive &&
+          this.role != 'Standard' &&
+          this.role != 'Premium' &&
+          this.role != 'Admin'
+        ) {
+          this.openModal();
+          this.loadingPlayer = false;
+        } else {
+          this.cdr.detectChanges();
+          // this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.video.url);
+          this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+            this.video.url,
+          );
+          this.getDestacados();
+          this.getCommentsByVideoId(this.videoId);
+        }
       },
       (error) => {
         console.error('Error al obtener el video:', error);
-      }
+        this.router.navigate(['/not-found']);
+      },
     );
   }
 
@@ -275,7 +273,7 @@ export class PlayerComponent implements OnInit {
       (error) => {
         this.loadingPlayer = false;
         console.error('Error al obtener los videos destacados:', error);
-      }
+      },
     );
   }
 
@@ -302,6 +300,7 @@ export class PlayerComponent implements OnInit {
   closeModal() {
     this.modalOpen = false;
     document.body.classList.remove('modal-open');
+    this.router.navigate(['/home']);
     // Remueve la clase que evita el scroll del body
   }
 
@@ -386,10 +385,13 @@ export class PlayerComponent implements OnInit {
     // Agrega una clase para evitar el scroll del body
   }
 
-
-
   getExclusive(video: Video) {
-    if (video.exclusive && this.role != 'Standard' && this.role != 'Premium' && this.role != 'Admin') {
+    if (
+      video.exclusive &&
+      this.role != 'Standard' &&
+      this.role != 'Premium' &&
+      this.role != 'Admin'
+    ) {
       this.openModal();
       // Abre el modal si el video es premium y el usuario no tiene un rol premium
     } else {
@@ -407,7 +409,7 @@ export class PlayerComponent implements OnInit {
       (error) => {
         console.error('Error al eliminar el comentario', error);
         // Manejar el error, mostrar un mensaje de error, o realizar otras acciones según sea necesario
-      }
+      },
     );
   }
   startEditingComment(commentId: number, commentText: string): void {
@@ -420,7 +422,9 @@ export class PlayerComponent implements OnInit {
     this.http.editComment(commentId, editedText).subscribe(
       () => {
         // Update the comment locally in the comments list
-        const editedCommentIndex = this.comments.findIndex(comment => comment.id === commentId);
+        const editedCommentIndex = this.comments.findIndex(
+          (comment) => comment.id === commentId,
+        );
         if (editedCommentIndex !== -1) {
           this.comments[editedCommentIndex].comment = editedText;
         }
@@ -430,7 +434,7 @@ export class PlayerComponent implements OnInit {
       (error) => {
         console.error('Error al editar el comentario:', error);
         // Handle the error, display an error message, or take other necessary actions
-      }
+      },
     );
   }
   updateCommentInputState(): void {
@@ -445,7 +449,7 @@ export class PlayerComponent implements OnInit {
       (error) => {
         console.error('Error al contar y actualizar comentarios:', error);
         // Manejar el error, mostrar un mensaje de error, o realizar otras acciones según sea necesario
-      }
+      },
     );
   }
   saveVideoAsFavorite(videoId: number): void {
@@ -455,7 +459,6 @@ export class PlayerComponent implements OnInit {
           (response) => {
             // Aquí puedes realizar otras acciones después de que el video se guarde como favorito
             this.SaveOpenModal();
-
 
             this.UpdateLikeCloseModal();
             this.UpdateLikeCloseModal2();
@@ -472,7 +475,7 @@ export class PlayerComponent implements OnInit {
             this.UpdateLikeCloseModal2();
             this.UpdateDislikeCloseModal();
             this.UpdateDislikeCloseModal2();
-          }
+          },
         );
       } else {
         this.auth.loginWithPopup();

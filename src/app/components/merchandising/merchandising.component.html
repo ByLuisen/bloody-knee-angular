@@ -576,29 +576,30 @@
         </div>
       </div>
     </div>
-    <!-- Iterar sobre los productos utilizando *ngFor -->
+
+    <!-- Pantalla de carga mientras se obtienen los productos del merch -->
     <div
-      class="grid grid-cols-1 sm:grid-cols-2 text-center md:grid-cols-4 lg:grid-cols-4 px-5 sm:px-10 md:px-20 py-14 gap-4"
+      class="flex items-center justify-center my-8 w-full"
+      *ngIf="loading; else merchContainer"
     >
-      <!-- Pantalla de carga mientras se obtienen los productos del merch -->
-      <div
-        class="flex items-center justify-center my-8"
-        *ngIf="loading; else merchContainer"
-      >
-        <div class="relative h-12 w-12">
-          <div
-            class="absolute inset-0 h-12 w-12 rounded-full border-t-4 border-b-4 border-gray-200"
-          ></div>
-          <div
-            class="absolute inset-0 h-12 w-12 rounded-full border-t-4 border-b-4 border-red-500 animate-spin"
-          ></div>
-          <img
-            src="../../../assets/img/my_logo.webp"
-            class="absolute inset-2 rounded-full h-8 w-8"
-          />
-        </div>
+      <div class="relative h-12 w-12">
+        <div
+          class="absolute inset-0 h-12 w-12 rounded-full border-t-4 border-b-4 border-gray-200"
+        ></div>
+        <div
+          class="absolute inset-0 h-12 w-12 rounded-full border-t-4 border-b-4 border-red-500 animate-spin"
+        ></div>
+        <img
+          src="../../../assets/img/my_logo.webp"
+          class="absolute inset-2 rounded-full h-8 w-8"
+        />
       </div>
-      <ng-template #merchContainer>
+    </div>
+    <ng-template #merchContainer>
+      <!-- Iterar sobre los productos utilizando *ngFor -->
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 text-center md:grid-cols-4 lg:grid-cols-4 px-5 sm:px-10 md:px-20 py-14 gap-4"
+      >
         <div
           *ngFor="let producto of productosFiltrados()"
           class="justify-center hover:transform hover:scale-105 cursor-pointer"
@@ -625,8 +626,8 @@
           <p>{{ producto.name }}</p>
           <p class="text-red-600 text-2xl">€{{ producto.price }}</p>
         </div>
-      </ng-template>
-    </div>
+      </div>
+    </ng-template>
     <app-cart></app-cart>
   </div>
 </div>

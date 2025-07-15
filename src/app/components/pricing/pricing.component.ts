@@ -95,10 +95,10 @@ export class PricingComponent implements OnInit {
         }),
         tap((response) => {
           if (response) {
+            this.loading = false;
             window.location.href = response.data.checkout_url;
           }
         }),
-        finalize(() => (this.loading = false)),
       )
       .subscribe(
         () => {},

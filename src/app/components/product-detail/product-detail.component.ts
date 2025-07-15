@@ -43,11 +43,12 @@ export class ProductDetailComponent implements OnInit {
     private router: Router,
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.route.params.subscribe((params) => {
       this.productId = +params['productId'];
       this.loadingProduct = true;
       this.getProducto();
+      this.getRandomProducts();
     });
     this.shippingAddress = new FormGroup({
       country: new FormControl('España', [Validators.required]),
@@ -92,8 +93,6 @@ export class ProductDetailComponent implements OnInit {
         this.product = product![0];
         // Inicializar la imagen principal con la primera imagen del producto
         this.mainImageUrl = this.product ? this.product.url_img1 : '';
-
-        this.getRandomProducts();
       }
     } catch (error) {
       console.error('Error al obtener el producto:', error);

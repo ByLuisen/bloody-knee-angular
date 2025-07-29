@@ -47,7 +47,7 @@ Insert gif or link to demo
 
 
 
-## Tech Stack
+## 💻 Tech Stack
 
 **Frontend:** Angular • Tailwind CSS  
 **Backend:** Laravel • PostgreSQL • Docker  
@@ -56,7 +56,7 @@ Insert gif or link to demo
 **E-commerce:** Product catalog and integrated payments  
 **UX/UI:** Responsive design
 
-## Images (Desktop & Mobile)
+## 🖼️ Images (Desktop & Mobile)
 
 <div>
 

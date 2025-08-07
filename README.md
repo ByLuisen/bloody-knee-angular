@@ -22,8 +22,6 @@ Beyond technical training, Bloody Knee promotes holistic well‑being: it feat
 
 [bloodyknee.luisenric.com](https://bloodyknee.luisenric.com)
 
-Insert gif or link to demo
-
 ## 🔥 Features
 
 ### 📺 Videos
